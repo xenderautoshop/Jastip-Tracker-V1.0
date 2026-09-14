@@ -1,0 +1,3238 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Buku Kas Jastip</title>
+
+<!-- PWA -->
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#262b21">
+<link rel="icon" href="icon-192.png" type="image/png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Kas Jastip">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Spectral:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper: #efe9d6;
+    --paper-dark: #e3dabf;
+    --paper-darker: #d7ccab;
+    --ink: #262b21;
+    --ink-soft: #6b6a52;
+    --rule: #b7c2b6;
+    --margin: #a53d30;
+    --green: #2f6b4f;
+    --green-soft: #dfe8de;
+    --gold: #b9852f;
+    --gold-soft: #f1e2bd;
+    --blue: #3d5a73;
+    --blue-soft: #dbe4e8;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:
+      repeating-linear-gradient(transparent, transparent 34px, rgba(58,72,60,0.07) 35px),
+      var(--paper);
+    color:var(--ink);
+    font-family:'JetBrains Mono', monospace;
+    min-height:100vh;
+    padding: 28px 16px 80px;
+  }
+  .sheet{
+    max-width:1000px;
+    margin:0 auto;
+    background:var(--paper);
+    border:1px solid var(--paper-darker);
+    box-shadow: 0 1px 0 var(--paper-darker), 0 18px 40px -24px rgba(38,43,33,0.45);
+    position:relative;
+    padding: 0 0 32px 0;
+  }
+  .margin-rule{
+    position:absolute;
+    left:64px; top:0; bottom:0;
+    width:1px;
+    background: var(--margin);
+    opacity:0.35;
+  }
+  header{
+    padding: 34px 32px 20px 88px;
+    border-bottom: 2px solid var(--ink);
+    position:relative;
+  }
+  header .kop-label{
+    font-size:11px;
+    letter-spacing:0.14em;
+    color: var(--ink-soft);
+    margin-bottom:6px;
+  }
+  #bizNameInput{
+    font-family:'Spectral', serif;
+    font-weight:700;
+    font-size:30px;
+    background:transparent;
+    border:none;
+    border-bottom: 1px dashed transparent;
+    color:var(--ink);
+    padding:0;
+    width:100%;
+    max-width:560px;
+  }
+  #bizNameInput:hover, #bizNameInput:focus{
+    border-bottom: 1px dashed var(--ink-soft);
+    outline:none;
+  }
+  .header-top{
+    display:flex;
+    align-items:center;
+    gap:16px;
+  }
+  .logo-wrap{
+    position:relative;
+    width:60px;
+    height:60px;
+    flex-shrink:0;
+    border:1px dashed var(--rule);
+    background:#fff;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    cursor:pointer;
+    overflow:hidden;
+  }
+  .logo-wrap:hover{ border-color:var(--ink-soft); }
+  .logo-wrap img{ width:100%; height:100%; object-fit:cover; display:block; }
+  .logo-placeholder{
+    font-size:9px;
+    color:var(--ink-soft);
+    text-align:center;
+    letter-spacing:0.05em;
+    text-transform:uppercase;
+  }
+  .logo-remove-btn{
+    position:absolute;
+    top:-6px;
+    right:-6px;
+    width:18px;
+    height:18px;
+    border-radius:50%;
+    background:var(--margin);
+    color:#fff;
+    border:none;
+    font-size:10px;
+    line-height:1;
+    cursor:pointer;
+    padding:0;
+  }
+  .header-top #bizNameInput{ flex:1; min-width:0; }
+  .subline{
+    font-size:12.5px;
+    color:var(--ink-soft);
+    display:flex;
+    align-items:center;
+    gap:16px;
+    flex-wrap:wrap;
+    margin-top:6px;
+  }
+  .settings-inline{
+    display:flex; align-items:center; gap:6px;
+    font-size:11.5px;
+    color:var(--ink-soft);
+    border-left:1px solid var(--paper-darker);
+    padding-left:16px;
+  }
+  .settings-inline input{
+    width:52px;
+    font-family:'JetBrains Mono',monospace;
+    font-size:11.5px;
+    padding:4px 6px;
+    border:1px solid var(--rule);
+    background:#fff;
+    text-align:right;
+  }
+  .db-file-btn{
+    display:inline-flex; align-items:center; gap:4px;
+    font-family:'JetBrains Mono',monospace;
+    font-size:11px;
+    background:transparent;
+    border:1px solid var(--rule);
+    color:var(--ink-soft);
+    padding:5px 10px;
+    cursor:pointer;
+  }
+  .db-file-btn:hover{ background:var(--paper-dark); }
+
+  /* Tabs */
+  .tabs{
+    display:flex;
+    margin: 0 32px 0 88px;
+    border-bottom:1px solid var(--paper-darker);
+    flex-wrap:wrap;
+  }
+  .tab-btn{
+    font-family:'JetBrains Mono',monospace;
+    font-size:12.5px;
+    letter-spacing:0.03em;
+    background:transparent;
+    border:none;
+    color:var(--ink-soft);
+    padding:14px 4px;
+    margin-right:26px;
+    cursor:pointer;
+    border-bottom:2px solid transparent;
+    position:relative;
+    top:1px;
+  }
+  .tab-btn.active{
+    color:var(--ink);
+    border-bottom:2px solid var(--ink);
+    font-weight:600;
+  }
+
+  .tabpanel{ display:none; }
+  .tabpanel.active{ display:block; }
+
+  /* Stamps (summary) */
+  .stamps{
+    display:grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap:0;
+    margin: 20px 32px 0 88px;
+    border: 1px solid var(--paper-darker);
+  }
+  .stamp{
+    padding:16px 14px;
+    border-right:1px solid var(--paper-darker);
+    text-align:left;
+  }
+  .stamp:last-child{border-right:none;}
+  .stamp .label{
+    font-size:10px;
+    letter-spacing:0.08em;
+    color:var(--ink-soft);
+    margin-bottom:8px;
+    text-transform:uppercase;
+  }
+  .stamp .value{
+    font-family:'JetBrains Mono',monospace;
+    font-weight:700;
+    font-size:16.5px;
+  }
+  .stamp.hero{ background: var(--gold-soft); }
+  .stamp.hero .value{ color:#7a5a1b; font-size:18px; }
+  .stamp.debt .value{ color: var(--margin); }
+  .stamp.debt.zero .value{ color: var(--ink); }
+
+  .toolbar{
+    margin: 22px 32px 0 88px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    flex-wrap:wrap;
+    gap:12px;
+  }
+  .filters{ display:flex; gap:6px; flex-wrap:wrap; }
+  .filters button{
+    font-family:'JetBrains Mono',monospace;
+    font-size:11.5px;
+    background:transparent;
+    border:1px solid var(--rule);
+    color:var(--ink-soft);
+    padding:6px 12px;
+    cursor:pointer;
+  }
+  .filters button.active{
+    background:var(--ink); color:var(--paper); border-color:var(--ink);
+  }
+  .search-input{
+    font-family:'JetBrains Mono',monospace;
+    font-size:12.5px;
+    padding:7px 10px;
+    border:1px solid var(--rule);
+    background:#fff;
+    min-width:200px;
+  }
+  .add-btn{
+    font-family:'JetBrains Mono',monospace;
+    font-weight:600;
+    font-size:13px;
+    background:var(--ink);
+    color:var(--paper);
+    border:none;
+    padding:10px 18px;
+    cursor:pointer;
+  }
+  .add-btn:hover{ background:#3a4030; }
+
+  .list-head{
+    margin: 20px 32px 0 88px;
+    display:grid;
+    grid-template-columns: 78px 1.1fr 1.05fr 1fr 0.85fr 0.85fr 0.7fr 96px;
+    font-size:10px;
+    letter-spacing:0.06em;
+    text-transform:uppercase;
+    color:var(--ink-soft);
+    border-bottom:1px solid var(--ink);
+    padding-bottom:8px;
+  }
+  .rows{ margin: 0 32px 0 88px; }
+  .row{
+    display:grid;
+    grid-template-columns: 78px 1.1fr 1.05fr 1fr 0.85fr 0.85fr 0.7fr 96px;
+    align-items:center;
+    padding:12px 0;
+    border-bottom:1px dashed var(--rule);
+    font-size:12px;
+    gap:6px;
+  }
+  .row .customer{ font-weight:600; }
+  .row .item{ color:var(--ink-soft); font-size:11.5px; }
+  .row.unpaid .customer,
+  .row.unpaid .item,
+  .row.unpaid > .num{
+    color:var(--margin);
+    font-weight:600;
+  }
+  .row .trip-badge{
+    display:inline-block;
+    font-size:9.5px;
+    padding:1px 6px;
+    border:1px solid var(--rule);
+    color:var(--ink-soft);
+    margin-top:3px;
+  }
+  .row .fee-badge{
+    display:inline-block;
+    font-size:9px;
+    padding:0px 5px;
+    background:var(--gold-soft);
+    color:#7a5a1b;
+    margin-left:5px;
+  }
+  .row .courier-badge{
+    display:inline-block;
+    font-size:9.5px;
+    padding:1px 6px;
+    border:1px solid var(--blue);
+    color:var(--blue);
+    margin-top:3px;
+    margin-right:4px;
+  }
+  .row .resi-badge{
+    display:inline-block;
+    font-size:9.5px;
+    color:var(--ink-soft);
+    margin-top:3px;
+  }
+  .copy-resi-btn{
+    background:none; border:none; cursor:pointer; font-size:10px; color:var(--ink-soft); padding:0 2px; vertical-align:middle;
+  }
+  .copy-resi-btn:hover{ color:var(--green); }
+  .track-link{
+    color:var(--blue); text-decoration:none; font-size:10px; margin-left:2px; vertical-align:middle;
+  }
+  .track-link:hover{ text-decoration:underline; }
+  .num{ text-align:right; padding-right:8px; }
+  .num .fx-orig{ display:block; font-size:9.5px; color:var(--ink-soft); }
+
+  .status-pill{
+    font-size:10.5px;
+    padding:4px 6px;
+    border:1px solid transparent;
+    cursor:pointer;
+    text-align:center;
+    background:transparent;
+    font-family:'JetBrains Mono',monospace;
+    width:100%;
+  }
+  .status-pending{ background:var(--paper-dark); color:var(--ink-soft); border-color:var(--paper-darker);}
+  .status-dibeli{ background:var(--blue-soft); color:var(--blue); border-color:var(--blue);}
+  .status-dikirim{ background:var(--gold-soft); color:#7a5a1b; border-color:var(--gold);}
+  .status-selesai{ background:var(--green-soft); color:var(--green); border-color:var(--green);}
+  .status-pill:disabled{ opacity:0.8; cursor:not-allowed; }
+  .trx-code{
+    font-size:9px; color:var(--ink-soft); margin-top:2px; white-space:nowrap;
+  }
+
+  .paid-toggle{
+    font-size:10px;
+    padding:4px 5px;
+    border:1px solid var(--margin);
+    background:transparent;
+    cursor:pointer;
+    width:100%;
+    font-family:'JetBrains Mono',monospace;
+    color:var(--margin);
+    font-weight:600;
+  }
+  .paid-toggle.on{
+    background:var(--green-soft); border-color:var(--green); color:var(--green);
+  }
+  .paid-toggle:disabled{
+    opacity:0.65; cursor:not-allowed;
+  }
+
+  .row-actions{ display:flex; gap:4px; justify-content:flex-end; }
+  .icon-btn{
+    background:none; border:none; cursor:pointer; font-size:13px; color:var(--ink-soft); padding:2px 4px;
+  }
+  .icon-btn:hover{ color:var(--margin); }
+  .icon-btn:disabled{ opacity:0.5; cursor:not-allowed; }
+  .icon-btn:disabled:hover{ color:var(--ink-soft); }
+
+  .empty{
+    margin: 24px 32px 0 88px;
+    padding: 40px 20px;
+    text-align:center;
+    color:var(--ink-soft);
+    border:1px dashed var(--rule);
+    font-size:13px;
+  }
+
+  /* Customer cards */
+  .customer-list{ margin: 18px 32px 0 88px; display:flex; flex-direction:column; gap:0; }
+  .customer-card{ border-bottom:1px dashed var(--rule); padding:14px 0; cursor:pointer; }
+  .customer-top{ display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap; }
+  .customer-name{ font-family:'Spectral', serif; font-weight:600; font-size:16px; }
+  .customer-meta{ font-size:10.5px; color:var(--ink-soft); margin-top:3px; }
+  .customer-figures{ display:flex; gap:18px; font-size:11.5px; text-align:right; }
+  .customer-figures div .flabel{ font-size:9px; color:var(--ink-soft); text-transform:uppercase; letter-spacing:0.05em; }
+  .customer-figures div .fval{ font-weight:700; }
+  .customer-detail{ display:none; margin-top:12px; padding-left:2px; }
+  .customer-card.open .customer-detail{ display:block; }
+  .cust-order-row{
+    display:grid;
+    grid-template-columns: 70px 1.3fr 0.9fr 0.9fr 0.8fr;
+    font-size:11px;
+    padding:6px 0;
+    border-top:1px dotted var(--paper-darker);
+    color:var(--ink-soft);
+  }
+  .cust-order-row .item{ color:var(--ink); }
+  .customer-actions{
+    display:flex; gap:8px; align-items:center; margin-top:10px; flex-wrap:wrap;
+  }
+  .wa-phone-input{
+    font-family:'JetBrains Mono',monospace; font-size:11.5px; padding:6px 8px; border:1px solid var(--rule); background:#fff; width:160px;
+  }
+  .wa-btn{
+    font-family:'JetBrains Mono',monospace; font-size:11px; font-weight:600; background:var(--green); color:#fff; border:none; padding:7px 12px; cursor:pointer;
+  }
+  .wa-btn:hover{ background:#255943; }
+
+  /* Trip cards */
+  .trip-list{ margin: 18px 32px 0 88px; display:grid; grid-template-columns: repeat(auto-fill, minmax(280px,1fr)); gap:16px; }
+  .trip-card{
+    background:#fff;
+    border:1px solid var(--paper-darker);
+    padding:16px;
+    position:relative;
+  }
+  .trip-top{ display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:10px; }
+  .trip-name-input{
+    font-family:'Spectral', serif; font-weight:600; font-size:15.5px;
+    border:none; background:transparent; padding:0; width:100%;
+    border-bottom:1px dashed transparent;
+  }
+  .trip-name-input:hover, .trip-name-input:focus{ border-bottom:1px dashed var(--ink-soft); outline:none; }
+  .trip-currency-badge{
+    font-size:10px; padding:3px 7px; background:var(--paper-dark); color:var(--ink-soft); white-space:nowrap;
+  }
+  .trip-fields{ display:grid; grid-template-columns:1fr 1fr; gap:8px 10px; margin: 10px 0; }
+  .trip-fields label{ font-size:9px; text-transform:uppercase; letter-spacing:0.05em; color:var(--ink-soft); display:block; margin-bottom:3px;}
+  .trip-fields input{
+    width:100%; font-family:'JetBrains Mono',monospace; font-size:12px; padding:6px 7px; border:1px solid var(--rule); background:#fdfcf7;
+  }
+  .trip-stats{ border-top:1px dashed var(--rule); margin-top:10px; padding-top:10px; display:grid; grid-template-columns:1fr 1fr; gap:8px 10px; font-size:11.5px; }
+  .trip-stats .tlabel{ font-size:9px; text-transform:uppercase; color:var(--ink-soft); letter-spacing:0.05em; }
+  .trip-stats .tval{ font-weight:700; }
+  .trip-stats .tval.margin-pos{ color:var(--green); }
+  .trip-stats .tval.margin-neg{ color:var(--margin); }
+  .trip-actions{ display:flex; justify-content:flex-end; margin-top:10px; }
+  .trip-actions .icon-btn{ font-size:12px; }
+
+  footer.total-line{
+    margin: 0 32px 0 88px;
+    display:grid;
+    grid-template-columns: 78px 1.1fr 1.05fr 1fr 0.85fr 0.85fr 0.7fr 96px;
+    padding-top:12px;
+    border-top:2px solid var(--ink);
+    font-size:12px;
+    font-weight:700;
+  }
+
+  /* Report tab */
+  .report-head{
+    margin: 20px 32px 0 88px;
+    display:grid;
+    grid-template-columns: 1.6fr 0.6fr 1fr 1fr 1fr 1fr;
+    font-size:10px;
+    letter-spacing:0.06em;
+    text-transform:uppercase;
+    color:var(--ink-soft);
+    border-bottom:1px solid var(--ink);
+    padding-bottom:8px;
+    gap:6px;
+  }
+  .report-rows{ margin: 0 32px 0 88px; }
+  .report-row{
+    display:grid;
+    grid-template-columns: 1.6fr 0.6fr 1fr 1fr 1fr 1fr;
+    align-items:center;
+    padding:11px 0;
+    border-bottom:1px dashed var(--rule);
+    font-size:12px;
+    gap:6px;
+  }
+  .report-row .period{ font-weight:600; }
+  .report-row .period .bar{
+    height:3px; background:var(--gold); margin-top:6px; max-width:120px;
+  }
+  .report-row .num{ text-align:right; padding-right:8px; }
+  .report-row .num.profit{ color:var(--green); font-weight:700; }
+  .report-row .num.unpaid{ color:var(--margin); }
+
+  /* Database tab */
+  .db-table-wrap{
+    margin: 20px 32px 0 88px;
+    border:1px solid var(--paper-darker);
+    background:#fff;
+    overflow:auto;
+    max-height:560px;
+  }
+  .db-table{
+    border-collapse:collapse;
+    width:100%;
+    font-family:'JetBrains Mono',monospace;
+    font-size:11.5px;
+    white-space:nowrap;
+  }
+  .db-table thead th{
+    position:sticky; top:0;
+    background:var(--ink);
+    color:var(--paper);
+    text-align:left;
+    padding:9px 10px;
+    font-size:10px;
+    letter-spacing:0.04em;
+    text-transform:uppercase;
+    cursor:pointer;
+    user-select:none;
+    border-right:1px solid rgba(239,233,214,0.15);
+  }
+  .db-table thead th:hover{ background:#3a4030; }
+  .db-table thead th.sorted::after{ content:" ▾"; }
+  .db-table thead th.sorted.asc::after{ content:" ▴"; }
+  .db-table tbody td{
+    padding:8px 10px;
+    border-bottom:1px dashed var(--rule);
+    border-right:1px solid var(--paper-dark);
+  }
+  .db-table tbody tr{ cursor:pointer; }
+  .db-table tbody tr:hover{ background:var(--paper-dark); }
+  .db-table tbody tr:nth-child(even){ background:rgba(215,204,171,0.18); }
+  .db-table .db-del-btn{
+    background:none; border:none; cursor:pointer; color:var(--ink-soft); font-size:12px;
+  }
+  .db-table .db-del-btn:hover{ color:var(--margin); }
+
+  /* Modal / slip form */
+  .overlay{
+    position:fixed; inset:0;
+    background:rgba(38,43,33,0.45);
+    display:none;
+    align-items:flex-start;
+    justify-content:center;
+    padding: 40px 16px;
+    overflow-y:auto;
+    z-index:50;
+  }
+  .overlay.open{ display:flex; }
+  .slip{
+    background:var(--paper);
+    width:100%;
+    max-width:440px;
+    border:1px solid var(--paper-darker);
+    box-shadow: 0 20px 50px -20px rgba(0,0,0,0.5);
+    padding: 26px 26px 22px;
+  }
+  .slip h2{ font-family:'Spectral', serif; font-size:20px; margin: 0 0 18px 0; }
+  .field{ margin-bottom:14px; }
+  .field label{
+    display:block; font-size:10.5px; letter-spacing:0.06em; text-transform:uppercase; color:var(--ink-soft); margin-bottom:5px;
+  }
+  .field input, .field select{
+    width:100%; font-family:'JetBrains Mono',monospace; font-size:13.5px; padding:9px 10px; border:1px solid var(--rule); background:#fff; color:var(--ink);
+  }
+  .field input:focus, .field select:focus{ outline:none; border-color:var(--ink); }
+  .field input:disabled, .field select:disabled{
+    background:var(--paper-dark); color:var(--ink-soft); cursor:not-allowed; border-style:dashed;
+  }
+  .field .hint{ font-size:11px; color:var(--ink-soft); margin-top:5px; }
+  .two-col{ display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  .item-row{
+    display:flex; gap:6px; align-items:center; margin-bottom:6px;
+  }
+  .item-row input{
+    font-family:'JetBrains Mono',monospace; font-size:12px; padding:7px 8px; border:1px solid var(--rule); background:#fff; color:var(--ink);
+  }
+  .item-row input:focus{ outline:none; border-color:var(--ink); }
+  .item-row .item-name{ flex:1; min-width:0; width:auto; }
+  .item-row .item-qty{ width:44px; text-align:center; flex-shrink:0; }
+  .item-row .item-price{ width:92px; flex-shrink:0; }
+  .item-row .item-subtotal{
+    width:76px; font-size:10px; color:var(--ink-soft); text-align:right; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; flex-shrink:0;
+  }
+  .item-row .item-remove-btn{
+    background:none; border:none; cursor:pointer; color:var(--ink-soft); font-size:13px; padding:2px 4px; flex-shrink:0;
+  }
+  .item-row .item-remove-btn:hover{ color:var(--margin); }
+  .item-total-row{
+    display:flex; justify-content:space-between; align-items:center; margin-top:10px; padding-top:8px; border-top:1px dashed var(--rule); font-size:12.5px;
+  }
+  .slip-actions{ display:flex; justify-content:flex-end; gap:10px; margin-top:20px; }
+  .btn-secondary{
+    background:transparent; border:1px solid var(--rule); color:var(--ink-soft); padding:9px 16px; font-family:'JetBrains Mono',monospace; font-size:12.5px; cursor:pointer;
+  }
+  .btn-primary{
+    background:var(--ink); color:var(--paper); border:none; padding:9px 18px; font-family:'JetBrains Mono',monospace; font-weight:600; font-size:12.5px; cursor:pointer;
+  }
+  .fee-mode-toggle{ display:flex; gap:6px; margin-bottom:8px; }
+  .fee-mode-toggle button{
+    flex:1;
+    font-family:'JetBrains Mono',monospace;
+    font-size:10.5px;
+    background:transparent;
+    border:1px solid var(--rule);
+    color:var(--ink-soft);
+    padding:6px 4px;
+    cursor:pointer;
+  }
+  .fee-mode-toggle button.active{ background:var(--ink); color:var(--paper); border-color:var(--ink); }
+  .tax-mode-toggle{ display:flex; gap:6px; margin-bottom:8px; }
+  .tax-mode-toggle button{
+    flex:1;
+    font-family:'JetBrains Mono',monospace;
+    font-size:10.5px;
+    background:transparent;
+    border:1px solid var(--rule);
+    color:var(--ink-soft);
+    padding:6px 4px;
+    cursor:pointer;
+  }
+  .tax-mode-toggle button.active{ background:var(--margin); color:#fff; border-color:var(--margin); }
+
+  .chart-wrap{
+    margin: 20px 32px 0 88px;
+    background:#fff;
+    border:1px solid var(--paper-darker);
+    padding:16px;
+    height:280px;
+    position:relative;
+  }
+
+  /* Print / PDF export */
+  #printArea{ display:none; }
+  @media print{
+    body *{ visibility:hidden; }
+    #printArea, #printArea *{ visibility:visible; }
+    #printArea{ display:block; position:absolute; top:0; left:0; width:100%; padding:20px; }
+    .print-table{ width:100%; border-collapse:collapse; font-family:'JetBrains Mono',monospace; font-size:11px; margin-bottom:4px; border:1.5px solid #000; }
+    .print-table th, .print-table td{ border:1px solid #666; padding:6px 8px; text-align:left; }
+    .print-table thead{ display:table-header-group; }
+    .print-table thead th{ background:#eee; font-weight:700; border:1px solid #000; border-bottom:2px solid #000; }
+    .print-table tr{ page-break-inside:avoid; }
+    .print-table tbody tr:nth-child(even){ background:#f7f7f7; }
+    .print-title{ font-family:'Spectral',serif; font-size:20px; margin-bottom:4px; }
+    .print-sub{ font-size:11px; color:#555; margin-bottom:16px; }
+
+    /* Receipt (struk) layout — works for both A4 and thermal paper */
+    .receipt{ font-family:'JetBrains Mono',monospace; color:#000; }
+    .receipt .r-title{ text-align:center; font-weight:700; font-size:1.15em; margin-bottom:2px; }
+    .receipt .r-sub{ text-align:center; font-size:0.85em; margin-bottom:6px; }
+    .receipt .r-sep{ border-top:1px dashed #000; margin:6px 0; }
+    .receipt .r-line{ display:flex; justify-content:space-between; gap:8px; font-size:0.95em; padding:1px 0; }
+    .receipt .r-line span:last-child{ text-align:right; white-space:nowrap; }
+    .receipt .r-total{ font-weight:700; font-size:1.05em; }
+    .receipt .r-footer{ text-align:center; font-size:0.85em; margin-top:8px; }
+
+    /* Paper size variants, applied via body class right before printing */
+    body.print-thermal58 #printArea{ width:54mm; padding:2mm; font-size:10px; }
+    body.print-thermal58 .print-table{ font-size:9px; }
+    body.print-thermal58 .print-table th, body.print-thermal58 .print-table td{ padding:3px 4px; }
+    body.print-thermal80 #printArea{ width:74mm; padding:3mm; font-size:11px; }
+    body.print-thermal80 .print-table{ font-size:10px; }
+    body.print-a4 #printArea{ width:100%; }
+  }
+
+  /* Tablet (iPad portrait/landscape and similar) */
+  @media (max-width: 1024px){
+    .stamps{ grid-template-columns: repeat(3, 1fr); }
+    .trip-list{ grid-template-columns: repeat(auto-fill, minmax(240px,1fr)); }
+  }
+
+  @media (max-width: 780px){
+    .stamps{ grid-template-columns: repeat(2, 1fr); margin-left:20px; }
+    .stamp:nth-child(2n){ border-right:none; }
+    .stamp{ border-bottom:1px solid var(--paper-darker); }
+    header{ padding-left:20px; }
+    .margin-rule{ display:none; }
+    .header-top{ gap:12px; }
+    .logo-wrap{ width:48px; height:48px; }
+    #bizNameInput{ font-size:24px; }
+    .tabs, .toolbar, .list-head, .rows, footer.total-line, .customer-list, .trip-list, .report-head, .report-rows, .chart-wrap, .db-table-wrap{ margin-left:20px; }
+    .list-head, .report-head{ display:none; }
+    footer.total-line{ display:none; }
+    .row{ grid-template-columns: 1fr; gap:6px; padding:14px 0; }
+    .row > div{ display:flex; justify-content:space-between; align-items:center; }
+    .row > div.customer-line{ font-weight:700; font-size:13.5px; justify-content:flex-start; gap:8px; flex-direction:column; align-items:flex-start; }
+    .num{ text-align:right; padding-right:0; }
+    .customer-figures{ gap:12px; }
+    .cust-order-row{ grid-template-columns:1fr; gap:2px; }
+    .report-row{ grid-template-columns:1fr; gap:4px; }
+    .report-row > div{ display:flex; justify-content:space-between; }
+    .report-row .num{ padding-right:0; }
+    .trip-list{ grid-template-columns: 1fr; }
+    .two-col{ grid-template-columns: 1fr; }
+    .overlay{ padding:16px 10px; }
+    .slip{ padding:20px 18px 18px; max-width:100%; }
+    .item-row{ flex-wrap:wrap; row-gap:6px; }
+    .item-row .item-name{ flex:1 1 100%; }
+    .item-row .item-qty{ width:52px; }
+    .item-row .item-price{ flex:1; width:auto; min-width:70px; }
+    .item-row .item-subtotal{ width:auto; flex-shrink:0; }
+    .settings-inline{ border-left:none; padding-left:0; width:100%; }
+    .db-table-wrap{ max-height:400px; }
+  }
+
+  @media (max-width: 420px){
+    .row-actions{ flex-wrap:wrap; justify-content:flex-start; }
+  }
+</style>
+<style id="dynamicPrintStyle">@page { size: A4; margin: 12mm; }</style>
+</head>
+<body>
+
+<div class="sheet">
+  <div class="margin-rule"></div>
+  <header>
+    <div class="kop-label" id="todayLabel">— hari ini —</div>
+    <div class="header-top">
+      <div class="logo-wrap" id="logoWrap" title="Klik untuk upload/ganti logo">
+        <img id="logoImg" src="" alt="Logo" style="display:none;">
+        <div class="logo-placeholder" id="logoPlaceholder">+ Logo</div>
+        <button type="button" class="logo-remove-btn" id="logoRemoveBtn" style="display:none;" title="Hapus logo">✕</button>
+        <input type="file" id="logoInput" accept="image/*" style="display:none;">
+      </div>
+      <input id="bizNameInput" value="Buku Kas Jastip" spellcheck="false">
+    </div>
+    <div class="subline">
+      <span>Catat pesanan, kurs, dan untung per trip biar nggak ada yang kelewat</span>
+      <div class="settings-inline">
+        Fee default <input type="number" id="defaultFeePercentInput" value="10"> %
+      </div>
+      <div class="settings-inline">
+        🖨️ Kertas Print
+        <select id="printPaperSizeSelect" style="font-family:'JetBrains Mono',monospace;font-size:11px;padding:4px 6px;border:1px solid var(--rule);background:#fff;">
+          <option value="a4">A4 / Biasa</option>
+          <option value="thermal58">Thermal 58mm</option>
+          <option value="thermal80">Thermal 80mm</option>
+        </select>
+      </div>
+      <div class="settings-inline">
+        <button class="db-file-btn" id="exportDbBtn" type="button" style="display:none;">💾 .json</button>
+        <label class="db-file-btn" id="importDbLabel" style="display:none;">📂 .json
+          <input type="file" id="importDbInput" accept="application/json" style="display:none;">
+        </label>
+        <button class="db-file-btn" id="exportSqliteBtn" type="button" style="display:none;">🗄️ .sqlite</button>
+        <label class="db-file-btn" id="importSqliteLabel" style="display:none;">📂 .sqlite
+          <input type="file" id="importSqliteInput" accept=".sqlite,.db,.sqlite3,application/x-sqlite3" style="display:none;">
+        </label>
+        <button class="db-file-btn" id="connectSyncBtn" type="button">🔗 Auto-Sync .sqlite</button>
+        <span id="sqliteSyncStatus" style="font-size:10.5px; color:var(--ink-soft);"></span>
+      </div>
+    </div>
+  </header>
+
+  <div id="reconnectBanner" style="display:none; align-items:center; gap:10px; margin: 10px 32px 0 88px; padding:9px 14px; background:var(--gold-soft); border:1px solid var(--gold); font-size:11.5px; flex-wrap:wrap;">
+    <span>🔗 File .sqlite yang pernah tersambung terdeteksi — browser minta konfirmasi ulang izinnya.</span>
+    <button class="db-file-btn" id="reconnectBtn" type="button">Sambungkan Ulang</button>
+  </div>
+
+  <!-- SYNC LOCATION CHOICE POPUP -->
+  <div class="overlay" id="syncChoicePopup">
+    <div class="slip">
+      <h2>🔗 Auto-Sync .sqlite</h2>
+      <div class="field">
+        <label>Simpan &amp; sinkronkan file .sqlite ke mana?</label>
+      </div>
+      <div style="display:flex; flex-direction:column; gap:10px; margin-top:6px;">
+        <button type="button" class="btn-secondary" id="syncChoiceLocal" style="text-align:left; padding:14px;">
+          💻 <strong>Komputer / Folder Lokal</strong><br>
+          <span style="font-size:11px; color:var(--ink-soft); font-weight:400;">Simpan file langsung ke folder mana pun di komputer kamu.</span>
+        </button>
+        <button type="button" class="btn-secondary" id="syncChoiceDrive" style="text-align:left; padding:14px;">
+          ☁️ <strong>Google Drive</strong><br>
+          <span style="font-size:11px; color:var(--ink-soft); font-weight:400;">Simpan ke folder Google Drive yang sudah tersinkron di komputer (butuh Google Drive for Desktop terpasang).</span>
+        </button>
+      </div>
+      <div class="slip-actions">
+        <button class="btn-secondary" id="syncChoiceCancel">Batal</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <button class="tab-btn active" data-tab="pesanan">Pesanan</button>
+    <button class="tab-btn" data-tab="customer">Katalog Customer</button>
+    <button class="tab-btn" data-tab="trip">Per Trip</button>
+    <button class="tab-btn" data-tab="laporan">Laporan</button>
+  </div>
+
+  <!-- TAB: PESANAN -->
+  <div class="tabpanel active" id="tab-pesanan">
+    <div class="stamps">
+      <div class="stamp">
+        <div class="label">Pesanan</div>
+        <div class="value" id="statOrders">0</div>
+      </div>
+      <div class="stamp">
+        <div class="label">Modal Dibelanjakan</div>
+        <div class="value" id="statModal">Rp0</div>
+      </div>
+      <div class="stamp">
+        <div class="label">Fee Jastip (estimasi)</div>
+        <div class="value" id="statFee">Rp0</div>
+      </div>
+      <div class="stamp hero">
+        <div class="label">Profit Terealisasi</div>
+        <div class="value" id="statProfit">Rp0</div>
+      </div>
+      <div class="stamp debt zero">
+        <div class="label">Belum Lunas</div>
+        <div class="value" id="statDebt">Rp0</div>
+      </div>
+      <div class="stamp">
+        <div class="label">Total Pajak Impor</div>
+        <div class="value" id="statImportTax">Rp0</div>
+      </div>
+    </div>
+
+    <div class="toolbar">
+      <div class="filters" id="filterBar">
+        <button data-filter="semua" class="active">Semua</button>
+        <button data-filter="pending">Pending</button>
+        <button data-filter="dibeli">Dibeli</button>
+        <button data-filter="dikirim">Dikirim</button>
+        <button data-filter="selesai">Selesai</button>
+      </div>
+      <button class="add-btn" id="openAddBtn">+ Tambah Pesanan</button>
+    </div>
+
+    <div class="list-head">
+      <div>Tanggal</div>
+      <div>Customer</div>
+      <div>Barang / Trip</div>
+      <div>Modal</div>
+      <div>Fee</div>
+      <div>Status</div>
+      <div>Bayar</div>
+      <div></div>
+    </div>
+
+    <div class="rows" id="rowsContainer"></div>
+    <div class="empty" id="emptyState" style="display:none;">Belum ada pesanan tercatat. Ketuk "+ Tambah Pesanan" untuk mulai mencatat.</div>
+
+    <footer class="total-line">
+      <div></div><div></div><div></div>
+      <div class="num" id="footModal">Rp0</div>
+      <div class="num" id="footFee">Rp0</div>
+      <div></div><div></div><div></div>
+    </footer>
+  </div>
+
+  <!-- TAB: CUSTOMER -->
+  <div class="tabpanel" id="tab-customer">
+    <div class="toolbar">
+      <input type="text" class="search-input" id="customerSearch" placeholder="Cari nama customer...">
+      <div class="filters">
+        <button id="unpaidOnlyBtn">Tampilkan Belum Lunas Saja</button>
+      </div>
+    </div>
+    <div class="customer-list" id="customerList"></div>
+    <div class="empty" id="customerEmpty" style="display:none;">Belum ada customer. Tambahkan pesanan dulu di tab Pesanan.</div>
+  </div>
+
+  <!-- TAB: TRIP -->
+  <div class="tabpanel" id="tab-trip">
+    <div class="toolbar">
+      <div class="subline">Tiap trip punya kurs sendiri — revenue &amp; margin dihitung otomatis per trip.</div>
+      <button class="add-btn" id="openAddTripBtn">+ Tambah Trip</button>
+    </div>
+    <div class="trip-list" id="tripList"></div>
+    <div class="empty" id="tripEmpty" style="display:none;">Belum ada trip. Buat trip dulu sebelum mencatat pesanan dari luar negeri.</div>
+  </div>
+
+  <!-- TAB: LAPORAN -->
+  <div class="tabpanel" id="tab-laporan">
+    <div class="toolbar">
+      <div class="filters" id="reportFilterBar">
+        <button data-granularity="harian" class="active">Harian</button>
+        <button data-granularity="mingguan">Mingguan</button>
+        <button data-granularity="bulanan">Bulanan</button>
+      </div>
+      <div style="display:flex; gap:8px;">
+        <button class="btn-secondary" id="exportExcelBtn">⇩ Excel</button>
+        <button class="btn-secondary" id="exportPdfBtn">⇩ PDF</button>
+      </div>
+    </div>
+    <div class="chart-wrap">
+      <canvas id="trendChart"></canvas>
+    </div>
+    <div class="report-head">
+      <div>Periode</div>
+      <div>Pesanan</div>
+      <div>Modal</div>
+      <div>Fee (Revenue)</div>
+      <div>Profit Selesai</div>
+      <div>Belum Lunas</div>
+    </div>
+    <div class="report-rows" id="reportRows"></div>
+    <div class="empty" id="reportEmpty" style="display:none;">Belum ada data untuk ditampilkan di laporan ini.</div>
+
+    <div class="toolbar" style="margin-top:30px;">
+      <div class="subline">Breakdown performa tiap trip (akumulasi semua waktu)</div>
+    </div>
+    <div class="report-head">
+      <div>Trip</div>
+      <div>Pesanan</div>
+      <div>Modal</div>
+      <div>Fee</div>
+      <div>Revenue</div>
+      <div>Net Margin</div>
+    </div>
+    <div class="report-rows" id="tripBreakdownRows"></div>
+    <div class="empty" id="tripBreakdownEmpty" style="display:none;">Belum ada trip dengan pesanan untuk ditampilkan.</div>
+
+    <div class="toolbar" style="margin-top:30px;">
+      <div class="subline">Semua transaksi (bisa disortir per kolom &amp; dicari)</div>
+      <input type="text" class="search-input" id="dbSearch" placeholder="Cari di semua kolom...">
+    </div>
+    <div class="db-table-wrap">
+      <table class="db-table" id="dbTable">
+        <thead>
+          <tr>
+            <th data-key="code">Kode Transaksi</th>
+            <th data-key="date">Tanggal</th>
+            <th data-key="tripName">Trip</th>
+            <th data-key="customer">Customer</th>
+            <th data-key="item">Barang</th>
+            <th data-key="currency">Mata Uang</th>
+            <th data-key="rate">Kurs</th>
+            <th data-key="costForeign">Modal Asli</th>
+            <th data-key="costIDR">Modal (IDR)</th>
+            <th data-key="fee">Fee (IDR)</th>
+            <th data-key="feeMode">Mode Fee</th>
+            <th data-key="importTaxIDR">Pajak Impor</th>
+            <th data-key="status">Status</th>
+            <th data-key="courier">Ekspedisi</th>
+            <th data-key="trackingNumber">No. Resi</th>
+            <th data-key="paid">Bayar</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="dbTableBody"></tbody>
+      </table>
+    </div>
+    <div class="empty" id="dbEmpty" style="display:none;">Belum ada data transaksi.</div>
+    <div class="subline" id="dbRowCount" style="margin: 8px 32px 0 88px;"></div>
+  </div>
+</div>
+
+<div id="printArea"></div>
+
+<!-- ORDER FORM -->
+<div class="overlay" id="overlay">
+  <div class="slip">
+    <h2 id="slipTitle">Slip Pesanan Baru</h2>
+    <div class="hint" id="slipCodeDisplay" style="margin:-8px 0 16px; font-size:11.5px; letter-spacing:0.03em;"></div>
+    <div class="field">
+      <label>Trip</label>
+      <select id="fTrip">
+        <option value="">Tanpa Trip (Rupiah)</option>
+      </select>
+    </div>
+    <div class="field">
+      <label>Nama Customer</label>
+      <input type="text" id="fCustomer" placeholder="cth. Rani">
+    </div>
+    <div class="field">
+      <label>No. HP/WA Customer</label>
+      <input type="text" id="fCustomerPhone" placeholder="cth. 081234567890">
+      <div class="hint">Dipakai buat kirim pengingat pembayaran &amp; notifikasi pengiriman lewat WA</div>
+    </div>
+    <div class="field">
+      <label>Barang Dibeli <span id="itemsCurrencyLabel" style="text-transform:none;font-weight:400;letter-spacing:0;"></span></label>
+      <div id="itemRows"></div>
+      <button type="button" class="btn-secondary" id="addItemRowBtn" style="width:100%;margin-top:4px;">+ Tambah Item</button>
+      <div class="item-total-row">
+        <span>Total Modal</span>
+        <strong id="itemsTotalDisplay">Rp0</strong>
+      </div>
+    </div>
+    <div class="field">
+      <label>Ongkos Jastip / Fee</label>
+      <div class="fee-mode-toggle">
+        <button type="button" data-mode="manual" class="active">Manual (Rp)</button>
+        <button type="button" data-mode="percent">% dari Modal</button>
+      </div>
+      <input type="number" id="fFee" placeholder="0" min="0">
+      <input type="number" id="fFeePercent" placeholder="cth. 10" min="0" style="display:none;">
+      <div class="hint" id="fFeeHint"></div>
+    </div>
+    <div class="field" id="fRateWrap" style="display:none;">
+      <label>Kurs Dipakai (1 unit = Rp)</label>
+      <input type="number" id="fRate" placeholder="0" min="0">
+    </div>
+    <div class="field" id="importTaxWrap" style="display:none;">
+      <label>Pajak Impor / Bea Masuk</label>
+      <div class="tax-mode-toggle">
+        <button type="button" class="tax-toggle-btn active" data-tax="0">Tidak Kena Pajak</button>
+        <button type="button" class="tax-toggle-btn" data-tax="1">Kena Pajak Impor</button>
+      </div>
+      <input type="number" id="fImportTaxRate" placeholder="cth. 7.5 (%)" min="0" style="display:none;">
+      <div class="hint" id="fImportTaxHint"></div>
+    </div>
+    <div class="two-col">
+      <div class="field">
+        <label>Tanggal</label>
+        <input type="date" id="fDate">
+      </div>
+      <div class="field">
+        <label>Status</label>
+        <select id="fStatus">
+          <option value="pending">Pending</option>
+          <option value="dibeli">Dibeli</option>
+          <option value="dikirim">Dikirim</option>
+          <option value="selesai">Selesai</option>
+        </select>
+        <div class="hint" id="fStatusHint"></div>
+      </div>
+    </div>
+    <div class="two-col">
+      <div class="field">
+        <label>Ekspedisi</label>
+        <select id="fCourier">
+          <option value="">Belum dipilih</option>
+          <option value="JNE">JNE</option>
+          <option value="J&amp;T Express">J&amp;T Express</option>
+          <option value="SiCepat">SiCepat</option>
+          <option value="AnterAja">AnterAja</option>
+          <option value="Ninja Xpress">Ninja Xpress</option>
+          <option value="ID Express">ID Express</option>
+          <option value="Lion Parcel">Lion Parcel</option>
+          <option value="Pos Indonesia">Pos Indonesia</option>
+          <option value="GoSend (Gojek)">GoSend (Gojek)</option>
+          <option value="GrabExpress">GrabExpress (Grab)</option>
+          <option value="Ambil Sendiri">Ambil Sendiri / COD</option>
+          <option value="Lainnya">Lainnya</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>No. Resi</label>
+        <input type="text" id="fTracking" placeholder="cth. JP1234567890">
+        <button type="button" class="btn-secondary" id="fTrackBtn" style="display:none; margin-top:8px; width:100%;">🔍 Lacak Paket</button>
+        <button type="button" class="wa-btn" id="fSendWaBtn" style="display:none; margin-top:8px; width:100%;">📲 Kirim Notifikasi WA</button>
+        <div class="hint" id="fTrackingHint"></div>
+      </div>
+    </div>
+    <div class="field">
+      <label>Status Pembayaran</label>
+      <select id="fPaid">
+        <option value="0">Belum Lunas</option>
+        <option value="1">Lunas</option>
+      </select>
+      <div class="hint" id="fPaidHint"></div>
+    </div>
+    <div class="slip-actions">
+      <button class="btn-secondary" id="printReceiptBtn" type="button" style="display:none;">🖨️ Print Struk</button>
+      <button class="btn-secondary" id="cancelBtn">Batal</button>
+      <button class="btn-primary" id="saveBtn">Simpan</button>
+    </div>
+  </div>
+</div>
+
+<!-- SHIPPING UPDATE POPUP (shown when status changes to Dikirim) -->
+<div class="overlay" id="shippingPopupOverlay">
+  <div class="slip">
+    <h2>📦 Update Pengiriman</h2>
+    <div class="field">
+      <label>Nama pesanan berubah jadi "Dikirim" — isi dulu detail pengirimannya:</label>
+    </div>
+    <div class="field">
+      <label>Ekspedisi</label>
+      <select id="spCourier">
+        <option value="">Belum dipilih</option>
+        <option value="JNE">JNE</option>
+        <option value="J&amp;T Express">J&amp;T Express</option>
+        <option value="SiCepat">SiCepat</option>
+        <option value="AnterAja">AnterAja</option>
+        <option value="Ninja Xpress">Ninja Xpress</option>
+        <option value="ID Express">ID Express</option>
+        <option value="Lion Parcel">Lion Parcel</option>
+        <option value="Pos Indonesia">Pos Indonesia</option>
+        <option value="GoSend (Gojek)">GoSend (Gojek)</option>
+        <option value="GrabExpress">GrabExpress (Grab)</option>
+        <option value="Ambil Sendiri">Ambil Sendiri / COD</option>
+        <option value="Lainnya">Lainnya</option>
+      </select>
+    </div>
+    <div class="field">
+      <label>No. Resi</label>
+      <input type="text" id="spTracking" placeholder="cth. JP1234567890">
+      <div class="hint">Boleh dikosongkan dulu dan diisi belakangan lewat tombol Edit.</div>
+    </div>
+    <div class="slip-actions">
+      <button class="btn-secondary" id="spCancelBtn">Batal</button>
+      <button class="btn-primary" id="spSaveBtn">Simpan &amp; Update Status</button>
+    </div>
+  </div>
+</div>
+
+<!-- TRIP FORM -->
+<div class="overlay" id="tripOverlay">
+  <div class="slip">
+    <h2 id="tripSlipTitle">Trip Baru</h2>
+    <div class="field">
+      <label>Nama Trip</label>
+      <input type="text" id="tName" placeholder="cth. Jastip Korea Oktober">
+    </div>
+    <div class="two-col">
+      <div class="field">
+        <label>Mata Uang</label>
+        <select id="tCurrency"></select>
+      </div>
+      <div class="field">
+        <label>Tanggal Trip</label>
+        <input type="date" id="tDate">
+      </div>
+    </div>
+    <div class="two-col">
+      <div class="field">
+        <label>Kurs Dipakai (1 unit = Rp)</label>
+        <input type="number" id="tRate" placeholder="0" min="0">
+      </div>
+      <div class="field">
+        <label>Kurs Pasar (opsional)</label>
+        <input type="number" id="tMarketRate" placeholder="0" min="0">
+      </div>
+    </div>
+    <div class="field">
+      <label>Biaya Tambahan Trip (Rp) — bagasi, packing, dll</label>
+      <input type="number" id="tExtraCosts" placeholder="0" min="0">
+      <div class="hint">Kurs pasar dipakai untuk hitung margin dari selisih kurs. Kosongkan kalau nggak mau menghitungnya.</div>
+    </div>
+    <div class="slip-actions">
+      <button class="btn-secondary" id="tripCancelBtn">Batal</button>
+      <button class="btn-primary" id="tripSaveBtn">Simpan</button>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/exceljs/4.4.0/exceljs.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.10.3/sql-wasm.js"></script>
+<script>
+  /* ---------- window.storage polyfill (IndexedDB) ----------
+     Inside Claude.ai's artifact preview, window.storage is provided by the host.
+     Outside it (installed as a PWA / opened as a plain file), this polyfill gives
+     the exact same async get/set/delete/list interface backed by IndexedDB, so the
+     rest of the app doesn't need to know the difference. */
+  (function(){
+    if(window.storage) return;
+    const DB_NAME = 'buku-kas-jastip-storage';
+    const STORE = 'kv';
+    function openDB(){
+      return new Promise((resolve, reject) => {
+        const req = indexedDB.open(DB_NAME, 1);
+        req.onupgradeneeded = () => { req.result.createObjectStore(STORE); };
+        req.onsuccess = () => resolve(req.result);
+        req.onerror = () => reject(req.error);
+      });
+    }
+    window.storage = {
+      async get(key){
+        const db = await openDB();
+        return new Promise((resolve, reject) => {
+          const tx = db.transaction(STORE, 'readonly');
+          const req = tx.objectStore(STORE).get(key);
+          req.onsuccess = () => {
+            if(req.result === undefined){ reject(new Error('Key not found: ' + key)); return; }
+            resolve({ key, value: req.result });
+          };
+          req.onerror = () => reject(req.error);
+        });
+      },
+      async set(key, value){
+        const db = await openDB();
+        return new Promise((resolve, reject) => {
+          const tx = db.transaction(STORE, 'readwrite');
+          tx.objectStore(STORE).put(value, key);
+          tx.oncomplete = () => resolve({ key, value });
+          tx.onerror = () => reject(tx.error);
+        });
+      },
+      async delete(key){
+        const db = await openDB();
+        return new Promise((resolve, reject) => {
+          const tx = db.transaction(STORE, 'readwrite');
+          tx.objectStore(STORE).delete(key);
+          tx.oncomplete = () => resolve({ key, deleted:true });
+          tx.onerror = () => reject(tx.error);
+        });
+      },
+      async list(prefix){
+        const db = await openDB();
+        return new Promise((resolve, reject) => {
+          const tx = db.transaction(STORE, 'readonly');
+          const req = tx.objectStore(STORE).getAllKeys();
+          req.onsuccess = () => {
+            let keys = req.result;
+            if(prefix) keys = keys.filter(k => String(k).startsWith(prefix));
+            resolve({ keys, prefix });
+          };
+          req.onerror = () => reject(req.error);
+        });
+      }
+    };
+  })();
+
+  if('serviceWorker' in navigator){
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('sw.js').catch(() => { /* offline caching just won't be available */ });
+    });
+  }
+
+  const STORAGE_KEY = 'jastip-data-v2';
+  const LEGACY_KEY = 'jastip-data';
+
+  const CURRENCIES = [
+    { code:'IDR', label:'IDR — Rupiah', symbol:'Rp', defaultRate:1 },
+    { code:'USD', label:'USD — Dolar AS', symbol:'$', defaultRate:16300 },
+    { code:'JPY', label:'JPY — Yen Jepang', symbol:'¥', defaultRate:108 },
+    { code:'KRW', label:'KRW — Won Korea', symbol:'₩', defaultRate:11.5 },
+    { code:'CNY', label:'CNY — Yuan China', symbol:'¥', defaultRate:2250 },
+    { code:'SGD', label:'SGD — Dolar Singapura', symbol:'S$', defaultRate:12100 },
+    { code:'MYR', label:'MYR — Ringgit Malaysia', symbol:'RM', defaultRate:3550 },
+    { code:'THB', label:'THB — Baht Thailand', symbol:'฿', defaultRate:450 },
+    { code:'EUR', label:'EUR — Euro', symbol:'€', defaultRate:17700 },
+    { code:'GBP', label:'GBP — Poundsterling', symbol:'£', defaultRate:20700 },
+    { code:'AUD', label:'AUD — Dolar Australia', symbol:'A$', defaultRate:10700 },
+    { code:'HKD', label:'HKD — Dolar Hong Kong', symbol:'HK$', defaultRate:2080 },
+    { code:'TWD', label:'TWD — Dolar Taiwan', symbol:'NT$', defaultRate:500 },
+    { code:'VND', label:'VND — Dong Vietnam', symbol:'₫', defaultRate:0.65 },
+  ];
+
+  let state = { businessName: 'Buku Kas Jastip', businessLogo: null, trips: [], orders: [], settings: { defaultFeePercent: 10, printPaperSize: 'a4' }, customerPhones: {} };
+  let activeTab = 'pesanan';
+  let currentFilter = 'semua';
+  let customerQuery = '';
+  let customerUnpaidOnly = false;
+  let editingId = null;
+  let openCustomerKey = null;
+  let currentFeeMode = 'manual';
+  let currentImportTaxEnabled = false;
+  let reportGranularity = 'harian';
+  let trendChartInstance = null;
+  let lastReportPeriods = [];
+  let dbQuery = '';
+  let dbSortKey = 'date';
+  let dbSortDir = 'desc';
+
+  const statusLabel = { pending:'Pending', dibeli:'Dibeli', dikirim:'Dikirim', selesai:'Selesai' };
+
+  const idr = (n) => 'Rp' + Math.round(n||0).toLocaleString('id-ID');
+  const getCurrency = (code) => CURRENCIES.find(c => c.code === code) || CURRENCIES[0];
+  const fxFmt = (amount, code) => {
+    const c = getCurrency(code);
+    return c.symbol + Number(amount||0).toLocaleString('id-ID');
+  };
+
+  function todayISO(){ return new Date().toISOString().slice(0,10); }
+  function todayLong(){
+    return new Date().toLocaleDateString('id-ID', { weekday:'long', day:'numeric', month:'long', year:'numeric' });
+  }
+  function formatDateShort(iso){
+    if(!iso) return '-';
+    return new Date(iso+'T00:00:00').toLocaleDateString('id-ID',{day:'2-digit',month:'short'});
+  }
+  function escapeHtml(str){
+    const div = document.createElement('div');
+    div.textContent = str || '';
+    return div.innerHTML;
+  }
+  function getTrip(id){ return state.trips.find(t => t.id === id) || null; }
+
+  function orderTotalOwed(o){
+    return Number(o.costIDR||0) + Number(o.fee||0) + Number(o.importTaxIDR||0);
+  }
+
+
+  /* ---------- KODE TRANSAKSI (nomor + tanggal + bulan + tahun) ---------- */
+  function generateTransactionCode(dateISO, seq){
+    const d = new Date((dateISO || todayISO()) + 'T00:00:00');
+    const dd = String(d.getDate()).padStart(2,'0');
+    const mm = String(d.getMonth()+1).padStart(2,'0');
+    const yyyy = d.getFullYear();
+    return `TRX-${dd}${mm}${yyyy}-${String(seq).padStart(3,'0')}`;
+  }
+
+  function nextSeqForDate(dateISO){
+    let maxSeq = 0;
+    state.orders.forEach(o => {
+      if(o.date === dateISO && o.code){
+        const m = o.code.match(/-(\d+)$/);
+        if(m) maxSeq = Math.max(maxSeq, parseInt(m[1], 10));
+      }
+    });
+    return maxSeq + 1;
+  }
+
+  function ensureTransactionCodes(){
+    const perDateMax = {};
+    state.orders.forEach(o => {
+      if(o.code){
+        const m = o.code.match(/-(\d+)$/);
+        if(m){
+          const d = o.date || '';
+          perDateMax[d] = Math.max(perDateMax[d] || 0, parseInt(m[1], 10));
+        }
+      }
+    });
+    let changed = false;
+    state.orders.forEach(o => {
+      if(!o.code){
+        const d = o.date || todayISO();
+        const nextSeq = (perDateMax[d] || 0) + 1;
+        perDateMax[d] = nextSeq;
+        o.code = generateTransactionCode(d, nextSeq);
+        changed = true;
+      }
+    });
+    return changed;
+  }
+
+  async function loadData(){
+    let loaded = false;
+    try{
+      const res = await window.storage.get(STORAGE_KEY, false);
+      if(res && res.value){
+        const parsed = JSON.parse(res.value);
+        state.businessName = parsed.businessName || 'Buku Kas Jastip';
+        state.businessLogo = parsed.businessLogo || null;
+        state.trips = Array.isArray(parsed.trips) ? parsed.trips : [];
+        state.orders = Array.isArray(parsed.orders) ? parsed.orders : [];
+        state.settings = parsed.settings || { defaultFeePercent: 10, printPaperSize: 'a4' };
+        if(!state.settings.printPaperSize) state.settings.printPaperSize = 'a4';
+        state.customerPhones = parsed.customerPhones || {};
+        loaded = true;
+      }
+    }catch(e){ /* no v2 data yet */ }
+
+    if(!loaded){
+      try{
+        const legacy = await window.storage.get(LEGACY_KEY, false);
+        if(legacy && legacy.value){
+          const parsed = JSON.parse(legacy.value);
+          state.businessName = parsed.businessName || 'Buku Kas Jastip';
+          state.trips = [];
+          state.orders = (parsed.orders||[]).map(o => ({
+            id: o.id, tripId: null, customer: o.customer, item: o.item,
+            currency: 'IDR', rate: 1, costForeign: Number(o.cost||0), costIDR: Number(o.cost||0),
+            fee: Number(o.fee||0), feeMode:'manual', feePercent:null, date: o.date, status: o.status || 'pending', paid: !!o.paid
+          }));
+          saveData();
+        }
+      }catch(e){ /* nothing to migrate */ }
+    }
+
+    document.getElementById('bizNameInput').value = state.businessName;
+    document.getElementById('defaultFeePercentInput').value = state.settings.defaultFeePercent;
+    document.getElementById('printPaperSizeSelect').value = state.settings.printPaperSize || 'a4';
+    renderLogo();
+    populateCurrencySelect();
+    if(ensureTransactionCodes()){
+      saveData();
+    }
+    render();
+  }
+
+  async function saveData(){
+    try{
+      await window.storage.set(STORAGE_KEY, JSON.stringify(state), false);
+    }catch(e){ console.error('Gagal menyimpan data', e); }
+    syncToSqliteFile();
+  }
+
+  function populateCurrencySelect(){
+    const sel = document.getElementById('tCurrency');
+    sel.innerHTML = CURRENCIES.map(c => `<option value="${c.code}">${c.label}</option>`).join('');
+  }
+
+  function populateTripSelect(){
+    const sel = document.getElementById('fTrip');
+    sel.innerHTML = '<option value="">Tanpa Trip (Rupiah)</option>' +
+      state.trips.map(t => `<option value="${t.id}">${escapeHtml(t.name)} — ${t.currency}</option>`).join('');
+  }
+
+  /* ---------- TABS ---------- */
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      activeTab = btn.getAttribute('data-tab');
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      document.querySelectorAll('.tabpanel').forEach(p => p.classList.remove('active'));
+      document.getElementById('tab-' + activeTab).classList.add('active');
+      render();
+    });
+  });
+
+  /* ---------- RENDER ---------- */
+  function render(){
+    renderPesanan();
+    renderCustomers();
+    renderTrips();
+    renderReports();
+    renderTripBreakdown();
+    renderDatabase();
+  }
+
+  function renderPesanan(){
+    const orders = state.orders
+      .filter(o => currentFilter === 'semua' || o.status === currentFilter)
+      .slice()
+      .sort((a,b) => (b.date||'').localeCompare(a.date||''));
+
+    const container = document.getElementById('rowsContainer');
+    const empty = document.getElementById('emptyState');
+    container.innerHTML = '';
+    empty.style.display = orders.length === 0 ? 'block' : 'none';
+
+    orders.forEach(o => {
+      const trip = getTrip(o.tripId);
+      const isForeign = o.currency && o.currency !== 'IDR';
+      const row = document.createElement('div');
+      row.className = 'row' + (!o.paid ? ' unpaid' : '');
+      row.setAttribute('data-date', formatDateShort(o.date));
+      row.innerHTML = `
+        <div class="date-cell">${formatDateShort(o.date)}<div class="trx-code">${escapeHtml(o.code||'')}</div></div>
+        <div class="customer-line customer">${escapeHtml(o.customer)}</div>
+        <div class="item">${escapeHtml(o.item)}${trip ? `<span class="trip-badge">${escapeHtml(trip.name)}</span>` : ''}${o.courier ? `<span class="courier-badge">🚚 ${escapeHtml(o.courier)}</span>` : ''}${o.trackingNumber ? `<span class="resi-badge">Resi: ${escapeHtml(o.trackingNumber)} <button class="copy-resi-btn" data-id="${o.id}" data-action="copyResi" title="Salin resi">⧉</button> <a class="track-link" href="${trackingUrl(o.trackingNumber)}" target="_blank" rel="noopener" title="Lacak paket">🔍</a></span>` : ''}</div>
+        <div class="num">${idr(o.costIDR)}${isForeign ? `<span class="fx-orig">${fxFmt(o.costForeign, o.currency)}</span>` : ''}${Number(o.importTaxIDR||0) > 0 ? `<span class="fx-orig" style="color:var(--margin);">+ Pajak ${idr(o.importTaxIDR)}</span>` : ''}</div>
+        <div class="num">${idr(o.fee)}${o.feeMode==='percent' ? `<span class="fee-badge">${o.feePercent}%</span>` : ''}</div>
+        <div>
+          <select class="status-pill status-${o.status}" data-id="${o.id}" data-action="status" ${o.status==='selesai' ? 'disabled title="Pesanan sudah Selesai, status tidak bisa diubah lagi"' : ''}>
+            ${Object.keys(statusLabel).map(k => `<option value="${k}" ${k===o.status?'selected':''}>${statusLabel[k]}</option>`).join('')}
+          </select>
+        </div>
+        <div><button class="paid-toggle ${o.paid?'on':''}" data-id="${o.id}" data-action="paid" ${(o.status==='selesai' && o.paid) ? 'disabled title="Pesanan sudah selesai & lunas, tidak bisa diubah jadi belum lunas"' : ''}>${o.paid?'Lunas':'Belum Lunas'}</button></div>
+        <div class="row-actions">
+          ${o.status === 'dikirim' ? `<button class="icon-btn" data-id="${o.id}" data-action="sendShipWa" title="Kirim notifikasi WA">📲</button>` : ''}
+          <button class="icon-btn" data-id="${o.id}" data-action="printReceipt" title="Print struk">🖨️</button>
+          <button class="icon-btn" data-id="${o.id}" data-action="edit" title="${o.status==='selesai' ? 'Pesanan sudah Selesai, tidak bisa diedit lagi' : 'Edit'}" ${o.status==='selesai' ? 'disabled' : ''}>${o.status==='selesai' ? '🔒' : '✎'}</button>
+          <button class="icon-btn" data-id="${o.id}" data-action="delete" title="Hapus">✕</button>
+        </div>
+      `;
+      container.appendChild(row);
+    });
+
+    const all = state.orders;
+    const totalOrders = all.length;
+    const totalModal = all.reduce((s,o) => s + Number(o.costIDR||0), 0);
+    const totalFee = all.reduce((s,o) => s + Number(o.fee||0), 0);
+    const profitRealized = all.filter(o => o.status==='selesai' && o.paid).reduce((s,o) => s + Number(o.fee||0), 0);
+    const debt = all.filter(o => !o.paid).reduce((s,o) => s + orderTotalOwed(o), 0);
+    const totalImportTax = all.reduce((s,o) => s + Number(o.importTaxIDR||0), 0);
+
+    document.getElementById('statOrders').textContent = totalOrders;
+    document.getElementById('statModal').textContent = idr(totalModal);
+    document.getElementById('statFee').textContent = idr(totalFee);
+    document.getElementById('statProfit').textContent = idr(profitRealized);
+    document.getElementById('statDebt').textContent = idr(debt);
+    document.getElementById('statDebt').closest('.stamp').classList.toggle('zero', debt === 0);
+    document.getElementById('statImportTax').textContent = idr(totalImportTax);
+    document.getElementById('footModal').textContent = idr(totalModal);
+    document.getElementById('footFee').textContent = idr(totalFee);
+  }
+
+  function normalizePhone(raw){
+    if(!raw) return '';
+    let p = raw.replace(/[^0-9]/g,'');
+    if(!p) return '';
+    if(p.startsWith('0')) p = '62' + p.slice(1);
+    else if(!p.startsWith('62')) p = '62' + p;
+    return p.length >= 9 ? p : '';
+  }
+
+  function buildReminderText(name, unpaidOrders, totalUnpaid){
+    const lines = unpaidOrders.map(o => `- ${o.item} (${idr(orderTotalOwed(o))})`).join('\n');
+    return `Halo ${name}, ini pengingat tagihan jastip dari ${state.businessName}:\n${lines}\n\nTotal belum lunas: ${idr(totalUnpaid)}\n\nBoleh dibantu transfer ya, makasih! 🙏`;
+  }
+
+  function openWA(phone, text){
+    const normalized = normalizePhone(phone);
+    if(!normalized){ alert('Nomor WA belum diisi / formatnya belum bener. Contoh: 081234567890'); return; }
+    window.open(`https://wa.me/${normalized}?text=${encodeURIComponent(text)}`, '_blank');
+  }
+
+  function formatDateMedium(iso){
+    if(!iso) return '-';
+    return new Date(iso+'T00:00:00').toLocaleDateString('id-ID', { day:'numeric', month:'long', year:'numeric' });
+  }
+
+  function buildShippingNotifText(order){
+    const total = orderTotalOwed(order);
+    const itemBlock = (Array.isArray(order.items) && order.items.length > 0)
+      ? order.items.map(it => `- ${it.name}${it.qty > 1 ? ` x${it.qty}` : ''}`).join('\n')
+      : `- ${order.item}`;
+    const lines = [
+      `Halo ${order.customer}, pesanan jastip kamu sudah dikirim! 📦`,
+      ``,
+      `No. Transaksi: ${order.code || '-'}`,
+      `Barang:`,
+      itemBlock,
+      ``,
+      `Tanggal pesan: ${formatDateMedium(order.date)}`
+    ];
+    if(Number(order.importTaxIDR||0) > 0){
+      lines.push(`Pajak Impor/Bea Masuk: ${idr(order.importTaxIDR)}`);
+    }
+    lines.push(
+      `Total: ${idr(total)}`,
+      `Ekspedisi: ${order.courier || '-'}`,
+      `No. Resi: ${order.trackingNumber || '-'}`
+    );
+    if(order.trackingNumber){
+      lines.push(``, `Lacak paketnya di: ${trackingUrl(order.trackingNumber)}`);
+    }
+    lines.push(``, `Terima kasih sudah pakai jasa ${state.businessName}! 🙏`);
+    return lines.join('\n');
+  }
+
+  function sendShippingNotif(order){
+    if(!order.customer){ alert('Isi nama customer dulu.'); return; }
+    let phone = state.customerPhones[order.customer] || '';
+    if(!phone){
+      phone = prompt(`Nomor WA untuk ${order.customer} belum ada. Masukkan nomor WA (misal 081234567890):`, '') || '';
+      if(!phone.trim()) return;
+      state.customerPhones[order.customer] = phone.trim();
+      saveData();
+    }
+    openWA(phone, buildShippingNotifText(order));
+  }
+
+  document.getElementById('unpaidOnlyBtn').addEventListener('click', (e) => {
+    customerUnpaidOnly = !customerUnpaidOnly;
+    e.target.classList.toggle('active', customerUnpaidOnly);
+    renderCustomers();
+  });
+
+  function renderCustomers(){
+    const q = customerQuery.trim().toLowerCase();
+    const groups = {};
+    state.orders.forEach(o => {
+      const key = (o.customer||'Tanpa Nama').trim();
+      if(!groups[key]) groups[key] = [];
+      groups[key].push(o);
+    });
+
+    let entries = Object.keys(groups).map(name => {
+      const orders = groups[name].slice().sort((a,b)=>(b.date||'').localeCompare(a.date||''));
+      const totalModal = orders.reduce((s,o)=>s+Number(o.costIDR||0),0);
+      const totalFee = orders.reduce((s,o)=>s+Number(o.fee||0),0);
+      const totalUnpaid = orders.filter(o=>!o.paid).reduce((s,o)=>s+orderTotalOwed(o),0);
+      return { name, orders, totalModal, totalFee, totalUnpaid };
+    });
+
+    if(q) entries = entries.filter(e => e.name.toLowerCase().includes(q));
+    if(customerUnpaidOnly) entries = entries.filter(e => e.totalUnpaid > 0);
+    entries.sort((a,b) => b.totalFee - a.totalFee);
+
+    const list = document.getElementById('customerList');
+    const empty = document.getElementById('customerEmpty');
+    list.innerHTML = '';
+    empty.style.display = entries.length === 0 ? 'block' : 'none';
+
+    entries.forEach(entry => {
+      const { name, orders, totalModal, totalFee, totalUnpaid } = entry;
+      const totalOrders = orders.length;
+      const lastDate = orders[0] ? formatDateShort(orders[0].date) : '-';
+      const phone = state.customerPhones[name] || '';
+
+      const card = document.createElement('div');
+      card.className = 'customer-card' + (openCustomerKey === name ? ' open' : '');
+      card.innerHTML = `
+        <div class="customer-top">
+          <div>
+            <div class="customer-name">${escapeHtml(name)}</div>
+            <div class="customer-meta">${totalOrders} pesanan &middot; terakhir ${lastDate}</div>
+          </div>
+          <div class="customer-figures">
+            <div><div class="flabel">Modal</div><div class="fval">${idr(totalModal)}</div></div>
+            <div><div class="flabel">Fee</div><div class="fval">${idr(totalFee)}</div></div>
+            <div><div class="flabel">Belum Lunas</div><div class="fval" style="color:${totalUnpaid>0?'var(--margin)':'var(--ink)'}">${idr(totalUnpaid)}</div></div>
+          </div>
+        </div>
+        <div class="customer-actions">
+          <input type="text" class="wa-phone-input" placeholder="No. WA (08xxxxxxxxxx)" value="${escapeHtml(phone)}">
+          ${totalUnpaid > 0 ? `<button class="wa-btn" type="button">📲 Reminder WA</button>` : ''}
+        </div>
+        <div class="customer-detail">
+          ${orders.map(o => {
+            const trip = getTrip(o.tripId);
+            return `<div class="cust-order-row">
+              <div>${formatDateShort(o.date)}<span style="display:block;font-size:9px;color:var(--ink-soft);">${escapeHtml(o.code||'')}</span></div>
+              <div class="item">${escapeHtml(o.item)}${trip?` <span class="trip-badge">${escapeHtml(trip.name)}</span>`:''}</div>
+              <div>${idr(o.costIDR)}</div>
+              <div>${idr(o.fee)}</div>
+              <div>${statusLabel[o.status]||o.status}${o.paid?' · <span style="color:var(--green);font-weight:600;">Lunas</span>':' · <span style="color:var(--margin);font-weight:600;">Belum Lunas</span>'}${o.courier?` · ${escapeHtml(o.courier)}`:''}${o.trackingNumber?` · ${escapeHtml(o.trackingNumber)}`:''}</div>
+            </div>`;
+          }).join('')}
+        </div>
+      `;
+      card.addEventListener('click', () => {
+        openCustomerKey = openCustomerKey === name ? null : name;
+        renderCustomers();
+      });
+
+      const actionsDiv = card.querySelector('.customer-actions');
+      actionsDiv.addEventListener('click', (e) => e.stopPropagation());
+
+      const phoneInput = card.querySelector('.wa-phone-input');
+      phoneInput.addEventListener('change', () => {
+        state.customerPhones[name] = phoneInput.value.trim();
+        saveData();
+      });
+
+      const waBtn = card.querySelector('.wa-btn');
+      if(waBtn){
+        waBtn.addEventListener('click', () => {
+          const currentPhone = phoneInput.value.trim();
+          state.customerPhones[name] = currentPhone;
+          saveData();
+          const unpaidOrders = orders.filter(o => !o.paid);
+          openWA(currentPhone, buildReminderText(name, unpaidOrders, totalUnpaid));
+        });
+      }
+
+      list.appendChild(card);
+    });
+  }
+
+  function computeTripStatsFor(orders, trip){
+    const count = orders.length;
+    const modal = orders.reduce((s,o)=>s+Number(o.costIDR||0),0);
+    const fee = orders.reduce((s,o)=>s+Number(o.fee||0),0);
+    const fxMargin = (trip && trip.marketRate > 0)
+      ? orders.reduce((s,o)=> s + Number(o.costForeign||0) * (Number(o.rate||0) - Number(trip.marketRate||0)), 0)
+      : 0;
+    const revenue = fee + fxMargin;
+    const netMargin = revenue - (trip ? Number(trip.extraCosts||0) : 0);
+    const marginPct = modal > 0 ? (netMargin / modal * 100) : 0;
+    return { count, modal, fee, fxMargin, revenue, netMargin, marginPct };
+  }
+
+  function renderTrips(){
+    const list = document.getElementById('tripList');
+    const empty = document.getElementById('tripEmpty');
+    list.innerHTML = '';
+    empty.style.display = state.trips.length === 0 ? 'block' : 'none';
+
+    state.trips.slice().sort((a,b)=>(b.date||'').localeCompare(a.date||'')).forEach(t => {
+      const orders = state.orders.filter(o => o.tripId === t.id);
+      const stats = computeTripStatsFor(orders, t);
+
+      const card = document.createElement('div');
+      card.className = 'trip-card';
+      card.innerHTML = `
+        <div class="trip-top">
+          <input class="trip-name-input" value="${escapeHtml(t.name)}" data-id="${t.id}" data-field="name">
+          <span class="trip-currency-badge">${t.currency}</span>
+        </div>
+        <div class="trip-fields">
+          <div class="tf"><label>Kurs Dipakai</label><input type="number" value="${t.rate}" min="0" data-id="${t.id}" data-field="rate"></div>
+          <div class="tf"><label>Kurs Pasar</label><input type="number" value="${t.marketRate||''}" placeholder="—" min="0" data-id="${t.id}" data-field="marketRate"></div>
+          <div class="tf" style="grid-column:1 / -1;"><label>Biaya Tambahan (Rp)</label><input type="number" value="${t.extraCosts||0}" min="0" data-id="${t.id}" data-field="extraCosts"></div>
+        </div>
+        <div class="trip-stats">
+          <div><div class="tlabel">Pesanan</div><div class="tval">${stats.count}</div></div>
+          <div><div class="tlabel">Modal (IDR)</div><div class="tval">${idr(stats.modal)}</div></div>
+          <div><div class="tlabel">Fee Jastip</div><div class="tval">${idr(stats.fee)}</div></div>
+          <div><div class="tlabel">Margin Kurs</div><div class="tval">${idr(stats.fxMargin)}</div></div>
+          <div><div class="tlabel">Total Revenue</div><div class="tval">${idr(stats.revenue)}</div></div>
+          <div><div class="tlabel">Net Margin (${stats.marginPct.toFixed(1)}%)</div><div class="tval ${stats.netMargin>=0?'margin-pos':'margin-neg'}">${idr(stats.netMargin)}</div></div>
+        </div>
+        <div class="trip-actions">
+          <button class="icon-btn" data-id="${t.id}" data-action="deleteTrip" title="Hapus trip">✕ Hapus Trip</button>
+        </div>
+      `;
+      list.appendChild(card);
+    });
+  }
+
+  function tripBreakdownGroups(){
+    const groups = state.trips.map(t => ({
+      name: t.name, currency: t.currency, trip: t,
+      orders: state.orders.filter(o => o.tripId === t.id)
+    }));
+    const noTripOrders = state.orders.filter(o => !o.tripId);
+    if(noTripOrders.length > 0){
+      groups.push({ name: 'Tanpa Trip', currency: 'IDR', trip: null, orders: noTripOrders });
+    }
+    return groups.filter(g => g.orders.length > 0);
+  }
+
+  function renderTripBreakdown(){
+    const container = document.getElementById('tripBreakdownRows');
+    const empty = document.getElementById('tripBreakdownEmpty');
+    const groups = tripBreakdownGroups();
+    container.innerHTML = '';
+    empty.style.display = groups.length === 0 ? 'block' : 'none';
+
+    groups
+      .map(g => ({ ...g, stats: computeTripStatsFor(g.orders, g.trip) }))
+      .sort((a,b) => b.stats.revenue - a.stats.revenue)
+      .forEach(g => {
+        const s = g.stats;
+        const row = document.createElement('div');
+        row.className = 'report-row';
+        row.innerHTML = `
+          <div class="period">${escapeHtml(g.name)} <span class="trip-badge">${g.currency}</span></div>
+          <div>${s.count}</div>
+          <div class="num">${idr(s.modal)}</div>
+          <div class="num">${idr(s.fee)}</div>
+          <div class="num">${idr(s.revenue)}</div>
+          <div class="num" style="color:${s.netMargin>=0?'var(--green)':'var(--margin)'};font-weight:700;">${idr(s.netMargin)} <span style="font-weight:400;font-size:10px;">(${s.marginPct.toFixed(1)}%)</span></div>
+        `;
+        container.appendChild(row);
+      });
+  }
+
+  /* ---------- DATABASE ---------- */
+  const DB_COLUMNS = ['code','date','tripName','customer','item','currency','rate','costForeign','costIDR','fee','feeMode','importTaxIDR','status','courier','trackingNumber','paid'];
+  const DB_NUMERIC = new Set(['rate','costForeign','costIDR','fee','importTaxIDR']);
+
+  function renderDatabase(){
+    const rows = state.orders.map(o => {
+      const trip = getTrip(o.tripId);
+      return {
+        id: o.id,
+        code: o.code || '',
+        date: o.date || '',
+        tripName: trip ? trip.name : 'Tanpa Trip',
+        customer: o.customer || '',
+        item: o.item || '',
+        currency: o.currency || 'IDR',
+        rate: Number(o.rate||0),
+        costForeign: Number(o.costForeign||0),
+        costIDR: Number(o.costIDR||0),
+        fee: Number(o.fee||0),
+        feeMode: o.feeMode === 'percent' ? `Persen (${o.feePercent||0}%)` : 'Manual',
+        importTaxIDR: Number(o.importTaxIDR||0),
+        status: statusLabel[o.status] || o.status || '',
+        courier: o.courier || '',
+        trackingNumber: o.trackingNumber || '',
+        paid: o.paid ? 'Lunas' : 'Belum Lunas'
+      };
+    });
+
+    const q = dbQuery.trim().toLowerCase();
+    let filtered = !q ? rows : rows.filter(r => DB_COLUMNS.some(k => String(r[k]).toLowerCase().includes(q)));
+
+    filtered.sort((a,b) => {
+      const va = a[dbSortKey], vb = b[dbSortKey];
+      let cmp;
+      if(DB_NUMERIC.has(dbSortKey)) cmp = Number(va) - Number(vb);
+      else cmp = String(va).localeCompare(String(vb));
+      return dbSortDir === 'asc' ? cmp : -cmp;
+    });
+
+    document.querySelectorAll('#dbTable thead th[data-key]').forEach(th => {
+      th.classList.toggle('sorted', th.getAttribute('data-key') === dbSortKey);
+      th.classList.toggle('asc', th.getAttribute('data-key') === dbSortKey && dbSortDir === 'asc');
+    });
+
+    const tbody = document.getElementById('dbTableBody');
+    const empty = document.getElementById('dbEmpty');
+    tbody.innerHTML = '';
+    empty.style.display = filtered.length === 0 ? 'block' : 'none';
+    document.getElementById('dbRowCount').textContent = `${filtered.length} baris`;
+
+    filtered.forEach(r => {
+      const tr = document.createElement('tr');
+      tr.setAttribute('data-id', r.id);
+      const unpaidStyle = r.paid === 'Belum Lunas' ? 'color:var(--margin);font-weight:600;' : '';
+      tr.innerHTML = `
+        <td>${escapeHtml(r.code)}</td>
+        <td>${escapeHtml(r.date)}</td>
+        <td>${escapeHtml(r.tripName)}</td>
+        <td style="${unpaidStyle}">${escapeHtml(r.customer)}</td>
+        <td style="${unpaidStyle}">${escapeHtml(r.item)}</td>
+        <td>${escapeHtml(r.currency)}</td>
+        <td>${r.rate.toLocaleString('id-ID')}</td>
+        <td>${r.costForeign.toLocaleString('id-ID')}</td>
+        <td style="${unpaidStyle}">${idr(r.costIDR)}</td>
+        <td style="${unpaidStyle}">${idr(r.fee)}</td>
+        <td>${escapeHtml(r.feeMode)}</td>
+        <td>${r.importTaxIDR > 0 ? idr(r.importTaxIDR) : '-'}</td>
+        <td>${escapeHtml(r.status)}</td>
+        <td>${escapeHtml(r.courier || '-')}</td>
+        <td>${escapeHtml(r.trackingNumber || '-')}</td>
+        <td><span style="color:${r.paid==='Lunas'?'var(--green)':'var(--margin)'};font-weight:600;">${escapeHtml(r.paid)}</span></td>
+        <td><button class="db-del-btn" type="button" title="Hapus">✕</button></td>
+      `;
+      tbody.appendChild(tr);
+    });
+  }
+
+  document.getElementById('dbSearch').addEventListener('input', (e) => {
+    dbQuery = e.target.value;
+    renderDatabase();
+  });
+
+  document.querySelector('#dbTable thead').addEventListener('click', (e) => {
+    const th = e.target.closest('th[data-key]');
+    if(!th) return;
+    const key = th.getAttribute('data-key');
+    if(dbSortKey === key){ dbSortDir = dbSortDir === 'asc' ? 'desc' : 'asc'; }
+    else { dbSortKey = key; dbSortDir = 'asc'; }
+    renderDatabase();
+  });
+
+  document.getElementById('dbTableBody').addEventListener('click', (e) => {
+    const tr = e.target.closest('tr[data-id]');
+    if(!tr) return;
+    const id = tr.getAttribute('data-id');
+    const order = state.orders.find(o => o.id === id);
+    if(!order) return;
+
+    if(e.target.closest('.db-del-btn')){
+      if(confirm(`Hapus pesanan "${order.item}" dari ${order.customer}?`)){
+        state.orders = state.orders.filter(o => o.id !== id);
+        saveData(); render();
+      }
+      return;
+    }
+    if(order.status === 'selesai'){
+      alert('Pesanan yang sudah "Selesai" tidak bisa diedit lagi.');
+      return;
+    }
+    activeTab = 'pesanan';
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.toggle('active', b.getAttribute('data-tab') === 'pesanan'));
+    document.querySelectorAll('.tabpanel').forEach(p => p.classList.toggle('active', p.id === 'tab-pesanan'));
+    openForm(order);
+  });
+
+  /* ---------- LAPORAN ---------- */
+  function getPeriodInfo(dateStr, granularity){
+    const d = new Date(dateStr + 'T00:00:00');
+    if(granularity === 'harian'){
+      return { key: dateStr, sortKey: dateStr, label: d.toLocaleDateString('id-ID',{weekday:'long', day:'numeric', month:'long', year:'numeric'}) };
+    }
+    if(granularity === 'mingguan'){
+      const dow = (d.getDay()+6)%7; // Monday = 0
+      const monday = new Date(d); monday.setDate(d.getDate()-dow);
+      const sunday = new Date(monday); sunday.setDate(monday.getDate()+6);
+      const key = monday.toISOString().slice(0,10);
+      const label = `${monday.toLocaleDateString('id-ID',{day:'2-digit',month:'short'})} – ${sunday.toLocaleDateString('id-ID',{day:'2-digit',month:'short',year:'numeric'})}`;
+      return { key, sortKey: key, label };
+    }
+    // bulanan
+    const key = dateStr.slice(0,7);
+    const label = d.toLocaleDateString('id-ID',{month:'long', year:'numeric'});
+    return { key, sortKey: key, label };
+  }
+
+  function renderReports(){
+    const groups = {};
+    state.orders.forEach(o => {
+      if(!o.date) return;
+      const info = getPeriodInfo(o.date, reportGranularity);
+      if(!groups[info.key]) groups[info.key] = { label: info.label, sortKey: info.sortKey, orders: [] };
+      groups[info.key].orders.push(o);
+    });
+
+    const periods = Object.values(groups).sort((a,b) => b.sortKey.localeCompare(a.sortKey));
+    lastReportPeriods = periods;
+    const container = document.getElementById('reportRows');
+    const empty = document.getElementById('reportEmpty');
+    container.innerHTML = '';
+    empty.style.display = periods.length === 0 ? 'block' : 'none';
+
+    const maxFee = Math.max(1, ...periods.map(p => p.orders.reduce((s,o)=>s+Number(o.fee||0),0)));
+
+    periods.forEach(p => {
+      const count = p.orders.length;
+      const modal = p.orders.reduce((s,o)=>s+Number(o.costIDR||0),0);
+      const fee = p.orders.reduce((s,o)=>s+Number(o.fee||0),0);
+      const profit = p.orders.filter(o=>o.status==='selesai' && o.paid).reduce((s,o)=>s+Number(o.fee||0),0);
+      const unpaid = p.orders.filter(o=>!o.paid).reduce((s,o)=>s+orderTotalOwed(o),0);
+      const barWidth = Math.max(4, Math.round(fee / maxFee * 120));
+
+      const row = document.createElement('div');
+      row.className = 'report-row';
+      row.innerHTML = `
+        <div class="period">${p.label}<div class="bar" style="width:${barWidth}px;"></div></div>
+        <div>${count}</div>
+        <div class="num">${idr(modal)}</div>
+        <div class="num">${idr(fee)}</div>
+        <div class="num profit">${idr(profit)}</div>
+        <div class="num ${unpaid>0?'unpaid':''}">${idr(unpaid)}</div>
+      `;
+      container.appendChild(row);
+    });
+
+    renderTrendChart(periods);
+  }
+
+  function renderTrendChart(periods){
+    const canvas = document.getElementById('trendChart');
+    if(!canvas || typeof Chart === 'undefined') return;
+    const chronological = periods.slice().reverse();
+    const labels = chronological.map(p => p.label.length > 16 ? p.label.slice(0,14)+'…' : p.label);
+    const modalData = chronological.map(p => p.orders.reduce((s,o)=>s+Number(o.costIDR||0),0));
+    const feeData = chronological.map(p => p.orders.reduce((s,o)=>s+Number(o.fee||0),0));
+    const profitData = chronological.map(p => p.orders.filter(o=>o.status==='selesai'&&o.paid).reduce((s,o)=>s+Number(o.fee||0),0));
+
+    if(trendChartInstance){ trendChartInstance.destroy(); trendChartInstance = null; }
+    if(chronological.length === 0) return;
+
+    trendChartInstance = new Chart(canvas.getContext('2d'), {
+      type:'line',
+      data:{
+        labels,
+        datasets:[
+          { label:'Modal', data: modalData, borderColor:'#3d5a73', backgroundColor:'rgba(61,90,115,0.08)', tension:0.25, pointRadius:3 },
+          { label:'Fee (Revenue)', data: feeData, borderColor:'#b9852f', backgroundColor:'rgba(185,133,47,0.12)', tension:0.25, pointRadius:3 },
+          { label:'Profit Selesai', data: profitData, borderColor:'#2f6b4f', backgroundColor:'rgba(47,107,79,0.12)', tension:0.25, pointRadius:3 }
+        ]
+      },
+      options:{
+        responsive:true,
+        maintainAspectRatio:false,
+        interaction:{ mode:'index', intersect:false },
+        plugins:{
+          legend:{ labels:{ font:{ family:'JetBrains Mono', size:11 }, color:'#262b21' } },
+          tooltip:{ callbacks:{ label: (ctx) => `${ctx.dataset.label}: ${idr(ctx.parsed.y)}` } }
+        },
+        scales:{
+          x:{ ticks:{ font:{ family:'JetBrains Mono', size:10 }, color:'#6b6a52' }, grid:{ color:'#e3dabf' } },
+          y:{ ticks:{ font:{ family:'JetBrains Mono', size:10 }, color:'#6b6a52', callback:(v)=>'Rp'+Number(v).toLocaleString('id-ID') }, grid:{ color:'#e3dabf' } }
+        }
+      }
+    });
+  }
+
+  /* ---------- EXPORT EXCEL ---------- */
+  function addStyledSheet(workbook, sheetName, title, subTitle, headerRow, dataRows, colWidths){
+    const sheet = workbook.addWorksheet(sheetName.slice(0, 31));
+    const numCols = headerRow.length;
+    const thin = { style:'thin', color:{ argb:'FF000000' } };
+    const fullBorder = { top:thin, left:thin, bottom:thin, right:thin };
+
+    sheet.mergeCells(1, 1, 1, numCols);
+    const bizCell = sheet.getCell(1, 1);
+    bizCell.value = state.businessName;
+    bizCell.font = { bold:true, size:14 };
+    bizCell.alignment = { horizontal:'center' };
+
+    sheet.mergeCells(2, 1, 2, numCols);
+    const titleCell = sheet.getCell(2, 1);
+    titleCell.value = title;
+    titleCell.font = { bold:true, size:12 };
+    titleCell.alignment = { horizontal:'center' };
+
+    sheet.mergeCells(3, 1, 3, numCols);
+    const subCell = sheet.getCell(3, 1);
+    subCell.value = subTitle;
+    subCell.font = { italic:true, size:10, color:{ argb:'FF666666' } };
+    subCell.alignment = { horizontal:'center' };
+
+    const headerRowIndex = 5;
+    headerRow.forEach((h, i) => {
+      const cell = sheet.getCell(headerRowIndex, i + 1);
+      cell.value = h;
+      cell.font = { bold:true };
+      cell.fill = { type:'pattern', pattern:'solid', fgColor:{ argb:'FFE5DEC4' } };
+      cell.border = fullBorder;
+      cell.alignment = { vertical:'middle', wrapText:true };
+    });
+
+    dataRows.forEach((row, rIdx) => {
+      const excelRowIndex = headerRowIndex + 1 + rIdx;
+      row.forEach((val, cIdx) => {
+        const cell = sheet.getCell(excelRowIndex, cIdx + 1);
+        cell.value = val;
+        cell.border = fullBorder;
+      });
+    });
+
+    if(colWidths){
+      colWidths.forEach((w, i) => { sheet.getColumn(i + 1).width = w; });
+    }
+    sheet.views = [{ state:'frozen', ySplit: headerRowIndex }];
+    return sheet;
+  }
+
+  async function exportExcel(){
+    if(typeof ExcelJS === 'undefined'){ alert('Modul Excel belum termuat, coba lagi sebentar.'); return; }
+    const granLabel = { harian:'Harian', mingguan:'Mingguan', bulanan:'Bulanan' }[reportGranularity] || reportGranularity;
+    const generatedNote = `Dicetak ${todayLong()}`;
+
+    const periods = lastReportPeriods.slice().reverse();
+    const summaryHeader = ['Periode','Pesanan','Modal (IDR)','Fee / Revenue (IDR)','Profit Selesai (IDR)','Belum Lunas (IDR)'];
+    const summaryRows = periods.map(p => {
+      const modal = p.orders.reduce((s,o)=>s+Number(o.costIDR||0),0);
+      const fee = p.orders.reduce((s,o)=>s+Number(o.fee||0),0);
+      const profit = p.orders.filter(o=>o.status==='selesai'&&o.paid).reduce((s,o)=>s+Number(o.fee||0),0);
+      const unpaid = p.orders.filter(o=>!o.paid).reduce((s,o)=>s+orderTotalOwed(o),0);
+      return [p.label, p.orders.length, modal, fee, profit, unpaid];
+    });
+
+    const detailHeader = ['Kode Transaksi','Tanggal','Trip','Customer','Barang','Mata Uang','Kurs','Modal (Asli)','Modal (IDR)','Fee (IDR)','Mode Fee','Persen Fee','Kena Pajak Impor','Tarif Pajak (%)','Pajak Impor (IDR)','Status','Ekspedisi','No. Resi','Status Bayar'];
+    const detailRows = state.orders.slice().sort((a,b)=>(a.date||'').localeCompare(b.date||'')).map(o => {
+      const trip = getTrip(o.tripId);
+      return [
+        o.code||'-', o.date, trip?trip.name:'-', o.customer, o.item, o.currency, o.rate,
+        o.costForeign, o.costIDR, o.fee, o.feeMode==='percent'?'Persen':'Manual', o.feePercent||'',
+        o.importTaxEnabled?'Ya':'Tidak', o.importTaxRate||0, o.importTaxIDR||0,
+        statusLabel[o.status]||o.status, o.courier||'-', o.trackingNumber||'-', o.paid?'Lunas':'Belum Lunas'
+      ];
+    });
+
+    const breakdownHeader = ['Trip','Mata Uang','Pesanan','Modal (IDR)','Fee (IDR)','Margin Kurs (IDR)','Revenue (IDR)','Net Margin (IDR)','Margin %'];
+    const breakdownRows = tripBreakdownGroups()
+      .map(g => ({ ...g, stats: computeTripStatsFor(g.orders, g.trip) }))
+      .sort((a,b) => b.stats.revenue - a.stats.revenue)
+      .map(g => [g.name, g.currency, g.stats.count, g.stats.modal, g.stats.fee, g.stats.fxMargin, g.stats.revenue, g.stats.netMargin, Number(g.stats.marginPct.toFixed(1))]);
+
+    const workbook = new ExcelJS.Workbook();
+    workbook.creator = state.businessName;
+    workbook.created = new Date();
+
+    addStyledSheet(workbook, 'Laporan ' + granLabel, `Laporan ${granLabel}`, generatedNote, summaryHeader, summaryRows, [28,10,16,18,18,16]);
+    addStyledSheet(workbook, 'Breakdown Trip', 'Breakdown per Trip', generatedNote, breakdownHeader, breakdownRows, [22,10,10,14,14,16,14,16,10]);
+    addStyledSheet(workbook, 'Detail Pesanan', 'Detail Semua Transaksi', generatedNote, detailHeader, detailRows, [20,12,16,16,26,10,10,14,14,12,10,10,14,12,16,10,14,16,14]);
+
+    const buffer = await workbook.xlsx.writeBuffer();
+    const blob = new Blob([buffer], { type: 'application/octet-stream' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `laporan-jastip-${reportGranularity}-${todayISO()}.xlsx`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }
+
+  /* ---------- EXPORT PDF ---------- */
+  function applyPrintPaperSize(mode){
+    let sizeRule = '@page { size: A4; margin: 12mm; }';
+    if(mode === 'thermal58') sizeRule = '@page { size: 58mm auto; margin: 2mm; }';
+    else if(mode === 'thermal80') sizeRule = '@page { size: 80mm auto; margin: 3mm; }';
+    document.getElementById('dynamicPrintStyle').textContent = sizeRule;
+    document.body.classList.remove('print-a4', 'print-thermal58', 'print-thermal80');
+    document.body.classList.add('print-' + mode);
+  }
+
+  function getPrintPaperSize(){
+    return document.getElementById('printPaperSizeSelect').value || state.settings.printPaperSize || 'a4';
+  }
+
+  function exportPDF(){
+    applyPrintPaperSize(getPrintPaperSize());
+    const periods = lastReportPeriods;
+    const rowsHtml = periods.map(p => {
+      const modal = p.orders.reduce((s,o)=>s+Number(o.costIDR||0),0);
+      const fee = p.orders.reduce((s,o)=>s+Number(o.fee||0),0);
+      const profit = p.orders.filter(o=>o.status==='selesai'&&o.paid).reduce((s,o)=>s+Number(o.fee||0),0);
+      const unpaid = p.orders.filter(o=>!o.paid).reduce((s,o)=>s+orderTotalOwed(o),0);
+      return `<tr><td>${escapeHtml(p.label)}</td><td>${p.orders.length}</td><td>${idr(modal)}</td><td>${idr(fee)}</td><td>${idr(profit)}</td><td>${idr(unpaid)}</td></tr>`;
+    }).join('');
+
+    const breakdownHtml = tripBreakdownGroups()
+      .map(g => ({ ...g, stats: computeTripStatsFor(g.orders, g.trip) }))
+      .sort((a,b) => b.stats.revenue - a.stats.revenue)
+      .map(g => `<tr><td>${escapeHtml(g.name)} (${g.currency})</td><td>${g.stats.count}</td><td>${idr(g.stats.modal)}</td><td>${idr(g.stats.fee)}</td><td>${idr(g.stats.revenue)}</td><td>${idr(g.stats.netMargin)} (${g.stats.marginPct.toFixed(1)}%)</td></tr>`)
+      .join('');
+
+    const granLabel = { harian:'Harian', mingguan:'Mingguan', bulanan:'Bulanan' }[reportGranularity] || reportGranularity;
+
+    const detailHtml = state.orders.slice().sort((a,b)=>(a.date||'').localeCompare(b.date||'')).map(o => {
+      const trip = getTrip(o.tripId);
+      return `<tr>
+        <td>${escapeHtml(o.code||'-')}</td>
+        <td>${escapeHtml(formatDateShort(o.date))}</td>
+        <td>${escapeHtml(o.customer)}</td>
+        <td>${escapeHtml(o.item)}</td>
+        <td>${escapeHtml(trip ? trip.name : '-')}</td>
+        <td>${idr(o.costIDR)}</td>
+        <td>${idr(o.fee)}</td>
+        <td>${statusLabel[o.status]||o.status}</td>
+        <td>${o.paid ? 'Lunas' : 'Belum Lunas'}</td>
+      </tr>`;
+    }).join('');
+
+    document.getElementById('printArea').innerHTML = `
+      ${state.businessLogo ? `<img src="${state.businessLogo}" style="width:44px;height:44px;object-fit:cover;margin-bottom:6px;">` : ''}
+      <div class="print-title">${escapeHtml(state.businessName)}</div>
+      <div class="print-sub">Laporan ${granLabel} — dicetak ${todayLong()}</div>
+      <table class="print-table">
+        <thead><tr><th>Periode</th><th>Pesanan</th><th>Modal</th><th>Fee (Revenue)</th><th>Profit Selesai</th><th>Belum Lunas</th></tr></thead>
+        <tbody>${rowsHtml}</tbody>
+      </table>
+      <div class="print-sub" style="margin-top:20px;">Breakdown per Trip</div>
+      <table class="print-table">
+        <thead><tr><th>Trip</th><th>Pesanan</th><th>Modal</th><th>Fee</th><th>Revenue</th><th>Net Margin</th></tr></thead>
+        <tbody>${breakdownHtml}</tbody>
+      </table>
+      <div class="print-sub" style="margin-top:20px;">Detail Semua Transaksi</div>
+      <table class="print-table">
+        <thead><tr><th>Kode</th><th>Tanggal</th><th>Customer</th><th>Barang</th><th>Trip</th><th>Modal</th><th>Fee</th><th>Status</th><th>Bayar</th></tr></thead>
+        <tbody>${detailHtml}</tbody>
+      </table>
+    `;
+    window.print();
+  }
+
+  /* ---------- PRINT STRUK / RECEIPT (per transaksi) ---------- */
+  function buildReceiptHTML(order){
+    const trip = getTrip(order.tripId);
+    const itemLines = (Array.isArray(order.items) && order.items.length > 0)
+      ? order.items.map(it => `<div class="r-line"><span>${escapeHtml(it.name)}${it.qty>1?` x${it.qty}`:''}</span><span>${idr(it.subtotalIDR)}</span></div>`).join('')
+      : `<div class="r-line"><span>${escapeHtml(order.item)}</span><span>${idr(order.costIDR)}</span></div>`;
+
+    return `
+      <div class="receipt">
+        ${state.businessLogo ? `<div style="text-align:center;margin-bottom:6px;"><img src="${state.businessLogo}" style="width:48px;height:48px;object-fit:cover;"></div>` : ''}
+        <div class="r-title">${escapeHtml(state.businessName)}</div>
+        <div class="r-sub">${formatDateMedium(order.date)}</div>
+        <div class="r-sep"></div>
+        <div class="r-line"><span>No. Transaksi</span><span>${escapeHtml(order.code||'-')}</span></div>
+        <div class="r-line"><span>Customer</span><span>${escapeHtml(order.customer)}</span></div>
+        ${trip ? `<div class="r-line"><span>Trip</span><span>${escapeHtml(trip.name)}</span></div>` : ''}
+        <div class="r-sep"></div>
+        ${itemLines}
+        <div class="r-sep"></div>
+        <div class="r-line"><span>Subtotal Modal</span><span>${idr(order.costIDR)}</span></div>
+        ${Number(order.importTaxIDR||0) > 0 ? `<div class="r-line"><span>Pajak Impor</span><span>${idr(order.importTaxIDR)}</span></div>` : ''}
+        <div class="r-line"><span>Ongkos Jastip</span><span>${idr(order.fee)}</span></div>
+        <div class="r-sep"></div>
+        <div class="r-line r-total"><span>TOTAL</span><span>${idr(orderTotalOwed(order))}</span></div>
+        <div class="r-line"><span>Status Bayar</span><span>${order.paid ? 'LUNAS' : 'BELUM LUNAS'}</span></div>
+        ${order.courier ? `<div class="r-line"><span>Ekspedisi</span><span>${escapeHtml(order.courier)}</span></div>` : ''}
+        ${order.trackingNumber ? `<div class="r-line"><span>No. Resi</span><span>${escapeHtml(order.trackingNumber)}</span></div>` : ''}
+        <div class="r-sep"></div>
+        <div class="r-footer">Terima kasih! 🙏</div>
+      </div>
+    `;
+  }
+
+  function printReceipt(order){
+    applyPrintPaperSize(getPrintPaperSize());
+    document.getElementById('printArea').innerHTML = buildReceiptHTML(order);
+    window.print();
+  }
+
+
+
+  document.getElementById('exportExcelBtn').addEventListener('click', exportExcel);
+  document.getElementById('exportPdfBtn').addEventListener('click', exportPDF);
+
+  document.getElementById('reportFilterBar').addEventListener('click', (e) => {
+    const btn = e.target.closest('button[data-granularity]');
+    if(!btn) return;
+    reportGranularity = btn.getAttribute('data-granularity');
+    document.querySelectorAll('#reportFilterBar button').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    renderReports();
+  });
+
+  /* ---------- ORDER ROW ACTIONS ---------- */
+  document.getElementById('rowsContainer').addEventListener('click', (e) => {
+    const btn = e.target.closest('[data-action]');
+    if(!btn) return;
+    const id = btn.getAttribute('data-id');
+    const action = btn.getAttribute('data-action');
+    const order = state.orders.find(o => o.id === id);
+    if(!order) return;
+
+    if(action === 'delete'){
+      if(confirm(`Hapus pesanan "${order.item}" dari ${order.customer}?`)){
+        state.orders = state.orders.filter(o => o.id !== id);
+        saveData(); render();
+      }
+    } else if(action === 'edit'){
+      if(order.status === 'selesai'){
+        alert('Pesanan yang sudah "Selesai" tidak bisa diedit lagi.');
+        return;
+      }
+      openForm(order);
+    } else if(action === 'paid'){
+      if(order.status === 'selesai' && order.paid){
+        alert('Pesanan yang sudah "Selesai" dan Lunas tidak bisa diubah lagi jadi Belum Lunas.');
+        return;
+      }
+      order.paid = !order.paid;
+      saveData(); render();
+    } else if(action === 'copyResi'){
+      const text = order.trackingNumber || '';
+      if(navigator.clipboard && text){
+        navigator.clipboard.writeText(text).then(() => {
+          btn.textContent = '✓';
+          setTimeout(() => { btn.textContent = '⧉'; }, 1200);
+        }).catch(() => {});
+      }
+    } else if(action === 'sendShipWa'){
+      sendShippingNotif(order);
+    } else if(action === 'printReceipt'){
+      printReceipt(order);
+    }
+  });
+
+  document.getElementById('rowsContainer').addEventListener('change', (e) => {
+    const sel = e.target.closest('[data-action="status"]');
+    if(!sel) return;
+    const order = state.orders.find(o => o.id === sel.getAttribute('data-id'));
+    if(!order) return;
+
+    if(order.status === 'selesai'){
+      render();
+      return;
+    }
+
+    const newStatus = sel.value;
+    if(newStatus === 'dikirim' && order.status !== 'dikirim'){
+      openShippingPopup(order);
+      return;
+    }
+    order.status = newStatus;
+    saveData(); render();
+  });
+
+  /* ---------- SHIPPING UPDATE POPUP ---------- */
+  let shippingPopupOrderId = null;
+
+  function openShippingPopup(order){
+    shippingPopupOrderId = order.id;
+    document.getElementById('spCourier').value = order.courier || '';
+    document.getElementById('spTracking').value = order.trackingNumber || '';
+    document.getElementById('shippingPopupOverlay').classList.add('open');
+  }
+
+  function closeShippingPopup(){
+    document.getElementById('shippingPopupOverlay').classList.remove('open');
+    shippingPopupOrderId = null;
+    render();
+  }
+
+  document.getElementById('spCancelBtn').addEventListener('click', closeShippingPopup);
+  document.getElementById('shippingPopupOverlay').addEventListener('click', (e) => {
+    if(e.target.id === 'shippingPopupOverlay') closeShippingPopup();
+  });
+  document.getElementById('spSaveBtn').addEventListener('click', () => {
+    const order = state.orders.find(o => o.id === shippingPopupOrderId);
+    if(!order){ closeShippingPopup(); return; }
+    order.status = 'dikirim';
+    order.courier = document.getElementById('spCourier').value;
+    order.trackingNumber = document.getElementById('spTracking').value.trim();
+    saveData();
+    document.getElementById('shippingPopupOverlay').classList.remove('open');
+    shippingPopupOrderId = null;
+    render();
+  });
+
+  /* ---------- FILTER / SEARCH ---------- */
+  document.getElementById('filterBar').addEventListener('click', (e) => {
+    const btn = e.target.closest('button[data-filter]');
+    if(!btn) return;
+    currentFilter = btn.getAttribute('data-filter');
+    document.querySelectorAll('#filterBar button').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    renderPesanan();
+  });
+
+  document.getElementById('customerSearch').addEventListener('input', (e) => {
+    customerQuery = e.target.value;
+    renderCustomers();
+  });
+
+  /* ---------- SETTINGS ---------- */
+  document.getElementById('defaultFeePercentInput').addEventListener('change', (e) => {
+    state.settings.defaultFeePercent = Number(e.target.value || 0);
+    saveData();
+  });
+  document.getElementById('printPaperSizeSelect').addEventListener('change', (e) => {
+    state.settings.printPaperSize = e.target.value;
+    saveData();
+  });
+
+  /* ---------- ORDER FORM ---------- */
+  function escapeAttr(str){
+    return String(str||'').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  }
+
+  function summarizeItems(items){
+    return items.map(it => it.qty > 1 ? `${it.name} x${it.qty}` : it.name).join(', ');
+  }
+
+  function currentTripRate(){
+    const tripId = document.getElementById('fTrip').value;
+    const trip = getTrip(tripId);
+    return (trip && trip.currency !== 'IDR') ? Number(document.getElementById('fRate').value || trip.rate || 1) : 1;
+  }
+
+  function collectFormItems(){
+    const rate = currentTripRate();
+    return Array.from(document.querySelectorAll('#itemRows .item-row')).map(row => {
+      const name = row.querySelector('.item-name').value.trim();
+      const qty = Math.max(1, Number(row.querySelector('.item-qty').value || 1));
+      const unitPrice = Number(row.querySelector('.item-price').value || 0);
+      const subtotalForeign = qty * unitPrice;
+      const subtotalIDR = subtotalForeign * rate;
+      return { name, qty, unitPrice, subtotalForeign, subtotalIDR };
+    });
+  }
+
+  function createItemRow(data){
+    data = data || {};
+    const row = document.createElement('div');
+    row.className = 'item-row';
+    row.innerHTML = `
+      <input type="text" class="item-name" placeholder="Nama barang" value="${escapeAttr(data.name||'')}">
+      <input type="number" class="item-qty" placeholder="Qty" min="1" value="${data.qty||1}">
+      <input type="number" class="item-price" placeholder="Harga satuan" value="${data.unitPrice||''}">
+      <div class="item-subtotal">Rp0</div>
+      <button type="button" class="item-remove-btn" title="Hapus item">✕</button>
+    `;
+    row.querySelectorAll('.item-name,.item-qty,.item-price').forEach(inp => {
+      inp.addEventListener('input', updateItemsTotal);
+    });
+    row.querySelector('.item-remove-btn').addEventListener('click', () => {
+      if(document.querySelectorAll('#itemRows .item-row').length <= 1) return;
+      row.remove();
+      updateItemsTotal();
+    });
+    return row;
+  }
+
+  function addItemRow(data){
+    document.getElementById('itemRows').appendChild(createItemRow(data));
+    updateItemsTotal();
+  }
+
+  document.getElementById('addItemRowBtn').addEventListener('click', () => addItemRow());
+
+  function updateItemsTotal(){
+    const items = collectFormItems();
+    document.querySelectorAll('#itemRows .item-row').forEach((row, i) => {
+      row.querySelector('.item-subtotal').textContent = idr(items[i].subtotalIDR);
+    });
+    const totalIDR = items.reduce((s,it) => s + it.subtotalIDR, 0);
+    document.getElementById('itemsTotalDisplay').textContent = idr(totalIDR);
+    updateFeeHint();
+    updateImportTaxHint();
+  }
+
+  function updateCostFieldForTrip(tripId){
+    const trip = getTrip(tripId);
+    const currencyLabel = document.getElementById('itemsCurrencyLabel');
+    const rateWrap = document.getElementById('fRateWrap');
+    const importTaxWrap = document.getElementById('importTaxWrap');
+    if(trip && trip.currency !== 'IDR'){
+      currencyLabel.textContent = `(harga satuan dalam ${trip.currency})`;
+      rateWrap.style.display = 'block';
+      document.getElementById('fRate').value = trip.rate;
+      importTaxWrap.style.display = 'block';
+    } else {
+      currencyLabel.textContent = '(harga satuan dalam Rp)';
+      rateWrap.style.display = 'none';
+      importTaxWrap.style.display = 'none';
+      setImportTaxMode(false);
+      document.getElementById('fImportTaxRate').value = '';
+    }
+    updateItemsTotal();
+  }
+
+  function setImportTaxMode(enabled){
+    currentImportTaxEnabled = enabled;
+    document.querySelectorAll('.tax-toggle-btn').forEach(b => {
+      b.classList.toggle('active', (b.getAttribute('data-tax') === '1') === enabled);
+    });
+    document.getElementById('fImportTaxRate').style.display = enabled ? 'block' : 'none';
+    updateImportTaxHint();
+  }
+
+  function updateImportTaxHint(){
+    const hintEl = document.getElementById('fImportTaxHint');
+    if(!currentImportTaxEnabled){
+      hintEl.textContent = 'Berlaku kalau barang didatangkan dari luar negeri & kena bea cukai saat masuk Indonesia.';
+      return;
+    }
+    const rate = Number(document.getElementById('fImportTaxRate').value || 0);
+    const taxIDR = currentCostIDR() * rate / 100;
+    hintEl.textContent = `≈ ${idr(taxIDR)} — tarif bea masuk/PPN/PPh beda-beda tiap kategori & nilai barang menurut aturan Bea Cukai yang berlaku. Cek tarif terbaru sebelum diisi, angka ini cuma estimasi.`;
+  }
+
+  document.querySelectorAll('.tax-toggle-btn').forEach(b => {
+    b.addEventListener('click', () => setImportTaxMode(b.getAttribute('data-tax') === '1'));
+  });
+  document.getElementById('fImportTaxRate').addEventListener('input', (e) => { clampNonNegative(e); updateImportTaxHint(); });
+
+  function currentCostIDR(){
+    return collectFormItems().reduce((s,it) => s + it.subtotalIDR, 0);
+  }
+
+  function updateFeeHint(){
+    if(currentFeeMode !== 'percent'){ document.getElementById('fFeeHint').textContent = ''; return; }
+    const pct = Number(document.getElementById('fFeePercent').value || 0);
+    const costIDR = currentCostIDR();
+    document.getElementById('fFeeHint').textContent = `${pct}% dari ${idr(costIDR)} = ${idr(costIDR * pct / 100)}`;
+  }
+
+  function setFeeMode(mode){
+    currentFeeMode = mode;
+    document.querySelectorAll('.fee-mode-toggle button').forEach(b => b.classList.toggle('active', b.getAttribute('data-mode') === mode));
+    document.getElementById('fFee').style.display = mode === 'manual' ? 'block' : 'none';
+    document.getElementById('fFeePercent').style.display = mode === 'percent' ? 'block' : 'none';
+    updateFeeHint();
+  }
+
+  document.querySelectorAll('.fee-mode-toggle button').forEach(b => {
+    b.addEventListener('click', () => setFeeMode(b.getAttribute('data-mode')));
+  });
+
+  function clampNonNegative(e){
+    const el = e.target;
+    if(el.value !== '' && Number(el.value) < 0){
+      el.value = 0;
+    }
+  }
+
+  document.getElementById('fTrip').addEventListener('change', (e) => updateCostFieldForTrip(e.target.value));
+  document.getElementById('fRate').addEventListener('input', (e) => { clampNonNegative(e); updateItemsTotal(); });
+  document.getElementById('fFee').addEventListener('input', clampNonNegative);
+  document.getElementById('fFeePercent').addEventListener('input', (e) => { clampNonNegative(e); updateFeeHint(); });
+
+  function openForm(order){
+    editingId = order ? order.id : null;
+    populateTripSelect();
+    document.getElementById('slipTitle').textContent = order ? 'Edit Pesanan' : 'Slip Pesanan Baru';
+    document.getElementById('slipCodeDisplay').textContent = order && order.code
+      ? `Kode Transaksi: ${order.code}`
+      : 'Kode Transaksi: (dibuat otomatis saat disimpan)';
+    document.getElementById('printReceiptBtn').style.display = order ? 'inline-block' : 'none';
+    document.getElementById('fTrip').value = order ? (order.tripId || '') : '';
+    document.getElementById('fCustomer').value = order ? order.customer : '';
+    document.getElementById('fCustomerPhone').value = order ? (state.customerPhones[order.customer] || '') : '';
+    document.getElementById('fRate').value = order ? order.rate : '';
+    document.getElementById('fDate').value = order ? order.date : todayISO();
+    document.getElementById('fStatus').value = order ? order.status : 'pending';
+    const statusSelect = document.getElementById('fStatus');
+    const statusHint = document.getElementById('fStatusHint');
+    const alreadyFinal = !!(order && order.status === 'selesai');
+    statusSelect.disabled = alreadyFinal;
+    statusHint.textContent = alreadyFinal ? '🔒 Status Selesai bersifat final dan tidak bisa diubah lagi' : '';
+    document.getElementById('fCourier').value = order ? (order.courier || '') : '';
+    document.getElementById('fTracking').value = order ? (order.trackingNumber || '') : '';
+    document.getElementById('fPaid').value = order ? (order.paid ? '1':'0') : '0';
+
+    document.getElementById('itemRows').innerHTML = '';
+    if(order && Array.isArray(order.items) && order.items.length > 0){
+      order.items.forEach(it => addItemRow(it));
+    } else if(order){
+      addItemRow({ name: order.item, qty: 1, unitPrice: order.costForeign });
+    } else {
+      addItemRow();
+    }
+
+    const mode = order ? (order.feeMode || 'manual') : 'manual';
+    setFeeMode(mode);
+    if(mode === 'percent'){
+      document.getElementById('fFeePercent').value = order ? order.feePercent : state.settings.defaultFeePercent;
+    } else {
+      document.getElementById('fFee').value = order ? order.fee : '';
+      document.getElementById('fFeePercent').value = state.settings.defaultFeePercent;
+    }
+
+    document.getElementById('fImportTaxRate').value = order && order.importTaxRate != null ? order.importTaxRate : '';
+    currentImportTaxEnabled = !!(order && order.importTaxEnabled);
+    document.querySelectorAll('.tax-toggle-btn').forEach(b => {
+      b.classList.toggle('active', (b.getAttribute('data-tax') === '1') === currentImportTaxEnabled);
+    });
+    document.getElementById('fImportTaxRate').style.display = currentImportTaxEnabled ? 'block' : 'none';
+
+    updateCostFieldForTrip(document.getElementById('fTrip').value);
+    updateShippingFieldsState();
+    updatePaidLockState();
+    document.getElementById('overlay').classList.add('open');
+    document.getElementById('fCustomer').focus();
+  }
+  function closeForm(){ document.getElementById('overlay').classList.remove('open'); editingId = null; }
+
+  document.getElementById('fCustomer').addEventListener('input', () => {
+    const phoneField = document.getElementById('fCustomerPhone');
+    if(phoneField.value.trim()) return;
+    const name = document.getElementById('fCustomer').value.trim();
+    if(name && state.customerPhones[name]){
+      phoneField.value = state.customerPhones[name];
+    }
+  });
+
+  function trackingUrl(resi){
+    return `https://cekresi.com/?noresi=${encodeURIComponent(resi)}`;
+  }
+
+  function updateShippingFieldsState(){
+    const status = document.getElementById('fStatus').value;
+    const locked = (status === 'pending' || status === 'dibeli');
+    document.getElementById('fCourier').disabled = locked;
+    document.getElementById('fTracking').disabled = locked;
+
+    const tracking = document.getElementById('fTracking').value.trim();
+    const hint = document.getElementById('fTrackingHint');
+    if(locked){
+      hint.textContent = '🔒 Isi ekspedisi & resi setelah status jadi "Dikirim"';
+    } else if(status === 'dikirim' && !tracking){
+      hint.textContent = '💡 Jangan lupa isi nomor resi';
+    } else {
+      hint.textContent = '';
+    }
+
+    const trackBtn = document.getElementById('fTrackBtn');
+    const showTrackBtn = !locked && tracking;
+    trackBtn.style.display = showTrackBtn ? 'block' : 'none';
+
+    const sendWaBtn = document.getElementById('fSendWaBtn');
+    sendWaBtn.style.display = (status === 'dikirim') ? 'block' : 'none';
+  }
+
+  function updatePaidLockState(){
+    const status = document.getElementById('fStatus').value;
+    const paidSelect = document.getElementById('fPaid');
+    const hint = document.getElementById('fPaidHint');
+    const locked = (status === 'selesai' && paidSelect.value === '1');
+    paidSelect.disabled = locked;
+    hint.textContent = locked ? '🔒 Pesanan selesai & lunas tidak bisa diubah jadi belum lunas' : '';
+  }
+  document.getElementById('fPaid').addEventListener('change', updatePaidLockState);
+
+  document.getElementById('fStatus').addEventListener('change', () => {
+    updateShippingFieldsState();
+    updatePaidLockState();
+  });
+  document.getElementById('fTracking').addEventListener('input', updateShippingFieldsState);
+  document.getElementById('fTrackBtn').addEventListener('click', () => {
+    const resi = document.getElementById('fTracking').value.trim();
+    if(resi) window.open(trackingUrl(resi), '_blank');
+  });
+  document.getElementById('fSendWaBtn').addEventListener('click', () => {
+    const tripId = document.getElementById('fTrip').value || null;
+    const items = collectFormItems().filter(it => it.name);
+    const costIDR = items.reduce((s,it) => s + it.subtotalIDR, 0);
+    let fee;
+    if(currentFeeMode === 'percent'){
+      const pct = Number(document.getElementById('fFeePercent').value || 0);
+      fee = costIDR * pct / 100;
+    } else {
+      fee = Number(document.getElementById('fFee').value || 0);
+    }
+    const importTaxIDR = currentImportTaxEnabled
+      ? costIDR * Number(document.getElementById('fImportTaxRate').value || 0) / 100
+      : 0;
+    const existing = editingId ? state.orders.find(o => o.id === editingId) : null;
+    const tempOrder = {
+      code: existing ? existing.code : null,
+      customer: document.getElementById('fCustomer').value.trim(),
+      item: summarizeItems(items),
+      items,
+      date: document.getElementById('fDate').value || todayISO(),
+      courier: document.getElementById('fCourier').value,
+      trackingNumber: document.getElementById('fTracking').value.trim(),
+      costIDR, fee, importTaxIDR, tripId
+    };
+    sendShippingNotif(tempOrder);
+  });
+
+  function handleSave(){
+    const customer = document.getElementById('fCustomer').value.trim();
+    const tripId = document.getElementById('fTrip').value || null;
+    const trip = getTrip(tripId);
+    const currency = trip ? trip.currency : 'IDR';
+    const rate = trip && trip.currency !== 'IDR' ? Number(document.getElementById('fRate').value || trip.rate || 1) : 1;
+    if(rate < 0){
+      alert('Kurs tidak boleh minus.');
+      document.getElementById('fRate').focus();
+      return;
+    }
+
+    const items = collectFormItems().filter(it => it.name);
+    if(items.length === 0){
+      alert('Isi minimal satu nama barang.');
+      const firstNameInput = document.querySelector('#itemRows .item-name');
+      if(firstNameInput) firstNameInput.focus();
+      return;
+    }
+    const item = summarizeItems(items);
+    const costForeign = items.reduce((s,it) => s + it.subtotalForeign, 0);
+    const costIDR = items.reduce((s,it) => s + it.subtotalIDR, 0);
+
+    const date = document.getElementById('fDate').value || todayISO();
+    const status = document.getElementById('fStatus').value;
+
+    if(editingId){
+      const original = state.orders.find(o => o.id === editingId);
+      if(original && original.status === 'selesai'){
+        alert('Pesanan yang sudah "Selesai" tidak bisa diedit lagi.');
+        closeForm();
+        return;
+      }
+    }
+    const courier = document.getElementById('fCourier').value;
+    const trackingNumber = document.getElementById('fTracking').value.trim();
+    const paid = document.getElementById('fPaid').value === '1';
+
+    let fee, feeMode, feePercent;
+    if(currentFeeMode === 'percent'){
+      feePercent = Number(document.getElementById('fFeePercent').value || 0);
+      fee = costIDR * feePercent / 100;
+      feeMode = 'percent';
+    } else {
+      fee = Number(document.getElementById('fFee').value || 0);
+      feeMode = 'manual';
+      feePercent = null;
+    }
+
+    if(feePercent !== null && feePercent < 0){
+      alert('Persen fee tidak boleh minus.');
+      document.getElementById('fFeePercent').focus();
+      return;
+    }
+    if(fee < 0){
+      alert('Ongkos jastip / fee tidak boleh minus.');
+      document.getElementById('fFee').focus();
+      return;
+    }
+
+    const importTaxEnabled = currentImportTaxEnabled;
+    const importTaxRate = importTaxEnabled ? Number(document.getElementById('fImportTaxRate').value || 0) : 0;
+    if(importTaxRate < 0){
+      alert('Tarif pajak impor tidak boleh minus.');
+      document.getElementById('fImportTaxRate').focus();
+      return;
+    }
+    const importTaxIDR = importTaxEnabled ? (costIDR * importTaxRate / 100) : 0;
+
+    if(!customer){ document.getElementById('fCustomer').focus(); return; }
+
+    const customerPhone = document.getElementById('fCustomerPhone').value.trim();
+    state.customerPhones[customer] = customerPhone;
+
+    if(editingId){
+      const idx = state.orders.findIndex(o => o.id === editingId);
+      if(idx > -1){
+        state.orders[idx] = { ...state.orders[idx], tripId, customer, item, items, currency, rate, costForeign, costIDR, fee, feeMode, feePercent, importTaxEnabled, importTaxRate, importTaxIDR, date, status, courier, trackingNumber, paid };
+      }
+    } else {
+      const code = generateTransactionCode(date, nextSeqForDate(date));
+      state.orders.push({
+        id: 'o_' + Date.now() + '_' + Math.floor(Math.random()*1000),
+        code, tripId, customer, item, items, currency, rate, costForeign, costIDR, fee, feeMode, feePercent, importTaxEnabled, importTaxRate, importTaxIDR, date, status, courier, trackingNumber, paid
+      });
+    }
+    saveData(); render(); closeForm();
+  }
+
+  document.getElementById('openAddBtn').addEventListener('click', () => openForm(null));
+  document.getElementById('cancelBtn').addEventListener('click', closeForm);
+  document.getElementById('saveBtn').addEventListener('click', handleSave);
+  document.getElementById('printReceiptBtn').addEventListener('click', () => {
+    const order = state.orders.find(o => o.id === editingId);
+    if(order) printReceipt(order);
+  });
+  document.getElementById('overlay').addEventListener('click', (e) => { if(e.target.id === 'overlay') closeForm(); });
+
+  /* ---------- TRIP FORM ---------- */
+  function openTripForm(){
+    document.getElementById('tripSlipTitle').textContent = 'Trip Baru';
+    document.getElementById('tName').value = '';
+    document.getElementById('tCurrency').value = 'USD';
+    document.getElementById('tDate').value = todayISO();
+    document.getElementById('tRate').value = getCurrency('USD').defaultRate;
+    document.getElementById('tMarketRate').value = '';
+    document.getElementById('tExtraCosts').value = 0;
+    document.getElementById('tripOverlay').classList.add('open');
+    document.getElementById('tName').focus();
+  }
+  function closeTripForm(){ document.getElementById('tripOverlay').classList.remove('open'); }
+
+  document.getElementById('tCurrency').addEventListener('change', (e) => {
+    document.getElementById('tRate').value = getCurrency(e.target.value).defaultRate;
+  });
+  document.getElementById('tRate').addEventListener('input', clampNonNegative);
+  document.getElementById('tMarketRate').addEventListener('input', clampNonNegative);
+  document.getElementById('tExtraCosts').addEventListener('input', clampNonNegative);
+
+  document.getElementById('openAddTripBtn').addEventListener('click', openTripForm);
+  document.getElementById('tripCancelBtn').addEventListener('click', closeTripForm);
+  document.getElementById('tripOverlay').addEventListener('click', (e) => { if(e.target.id === 'tripOverlay') closeTripForm(); });
+
+  document.getElementById('tripSaveBtn').addEventListener('click', () => {
+    const name = document.getElementById('tName').value.trim();
+    if(!name){ document.getElementById('tName').focus(); return; }
+    const rate = Number(document.getElementById('tRate').value || 1);
+    const marketRate = Number(document.getElementById('tMarketRate').value || 0);
+    const extraCosts = Number(document.getElementById('tExtraCosts').value || 0);
+    if(rate < 0){ alert('Kurs tidak boleh minus.'); document.getElementById('tRate').focus(); return; }
+    if(marketRate < 0){ alert('Kurs pasar tidak boleh minus.'); document.getElementById('tMarketRate').focus(); return; }
+    if(extraCosts < 0){ alert('Biaya tambahan tidak boleh minus.'); document.getElementById('tExtraCosts').focus(); return; }
+    const trip = {
+      id: 't_' + Date.now() + '_' + Math.floor(Math.random()*1000),
+      name,
+      currency: document.getElementById('tCurrency').value,
+      rate, marketRate, extraCosts,
+      date: document.getElementById('tDate').value || todayISO()
+    };
+    state.trips.push(trip);
+    saveData(); render(); closeTripForm();
+  });
+
+  /* ---------- TRIP CARD EDITS ---------- */
+  document.getElementById('tripList').addEventListener('change', (e) => {
+    const el = e.target.closest('[data-field]');
+    if(!el) return;
+    const trip = getTrip(el.getAttribute('data-id'));
+    if(!trip) return;
+    const field = el.getAttribute('data-field');
+    if(field === 'name'){
+      trip.name = el.value.trim();
+    } else {
+      let val = Number(el.value || 0);
+      if(val < 0){ val = 0; el.value = 0; }
+      trip[field] = val;
+    }
+    saveData(); render();
+  });
+
+  document.getElementById('tripList').addEventListener('click', (e) => {
+    const btn = e.target.closest('[data-action="deleteTrip"]');
+    if(!btn) return;
+    const id = btn.getAttribute('data-id');
+    const trip = getTrip(id);
+    if(!trip) return;
+    const linkedCount = state.orders.filter(o => o.tripId === id).length;
+    const msg = linkedCount > 0
+      ? `Hapus trip "${trip.name}"? ${linkedCount} pesanan yang terhubung akan dipindah ke "Tanpa Trip".`
+      : `Hapus trip "${trip.name}"?`;
+    if(confirm(msg)){
+      state.orders.forEach(o => { if(o.tripId === id) o.tripId = null; });
+      state.trips = state.trips.filter(t => t.id !== id);
+      saveData(); render();
+    }
+  });
+
+  document.getElementById('bizNameInput').addEventListener('change', (e) => {
+    state.businessName = e.target.value.trim() || 'Buku Kas Jastip';
+    saveData();
+  });
+
+  /* ---------- LOGO BISNIS ---------- */
+  function renderLogo(){
+    const img = document.getElementById('logoImg');
+    const placeholder = document.getElementById('logoPlaceholder');
+    const removeBtn = document.getElementById('logoRemoveBtn');
+    if(state.businessLogo){
+      img.src = state.businessLogo;
+      img.style.display = 'block';
+      placeholder.style.display = 'none';
+      removeBtn.style.display = 'block';
+    } else {
+      img.style.display = 'none';
+      img.src = '';
+      placeholder.style.display = 'block';
+      removeBtn.style.display = 'none';
+    }
+  }
+
+  document.getElementById('logoWrap').addEventListener('click', (e) => {
+    if(e.target.id === 'logoRemoveBtn') return;
+    document.getElementById('logoInput').click();
+  });
+
+  document.getElementById('logoInput').addEventListener('change', (e) => {
+    const file = e.target.files[0];
+    if(!file) return;
+    if(!file.type.startsWith('image/')){
+      alert('File harus berupa gambar (PNG/JPG).');
+      e.target.value = '';
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+      const img = new Image();
+      img.onload = () => {
+        const size = 200;
+        const canvas = document.createElement('canvas');
+        canvas.width = size;
+        canvas.height = size;
+        const ctx = canvas.getContext('2d');
+        const scale = Math.max(size / img.width, size / img.height);
+        const w = img.width * scale;
+        const h = img.height * scale;
+        ctx.fillStyle = '#ffffff';
+        ctx.fillRect(0, 0, size, size);
+        ctx.drawImage(img, (size - w) / 2, (size - h) / 2, w, h);
+        state.businessLogo = canvas.toDataURL('image/jpeg', 0.85);
+        saveData();
+        renderLogo();
+      };
+      img.src = ev.target.result;
+    };
+    reader.readAsDataURL(file);
+    e.target.value = '';
+  });
+
+  document.getElementById('logoRemoveBtn').addEventListener('click', (e) => {
+    e.stopPropagation();
+    if(!confirm('Hapus logo bisnis?')) return;
+    state.businessLogo = null;
+    saveData();
+    renderLogo();
+  });
+
+  /* ---------- DATABASE FILE (export / import) ---------- */
+  function slugify(str){
+    return (str||'jastip').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'') || 'jastip';
+  }
+
+  function downloadDatabaseFile(){
+    const payload = {
+      app: 'Buku Kas Jastip — Database Transaksi',
+      exportedAt: new Date().toISOString(),
+      businessName: state.businessName,
+      businessLogo: state.businessLogo,
+      settings: state.settings,
+      customerPhones: state.customerPhones,
+      trips: state.trips,
+      orders: state.orders
+    };
+    const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `database-${slugify(state.businessName)}-${todayISO()}.json`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }
+
+  document.getElementById('exportDbBtn').addEventListener('click', downloadDatabaseFile);
+
+  document.getElementById('importDbInput').addEventListener('change', (e) => {
+    const file = e.target.files[0];
+    if(!file) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      try{
+        const parsed = JSON.parse(reader.result);
+        if(!parsed || !Array.isArray(parsed.orders)){
+          alert('File ini bukan file database yang valid.');
+          e.target.value = '';
+          return;
+        }
+        const ok = confirm(`Impor akan MENGGANTI semua data yang ada sekarang dengan isi file ini (${parsed.orders.length} pesanan, ${(parsed.trips||[]).length} trip). Lanjutkan?`);
+        if(!ok){ e.target.value = ''; return; }
+
+        state.businessName = parsed.businessName || state.businessName;
+        state.businessLogo = parsed.businessLogo || null;
+        state.settings = parsed.settings || state.settings;
+        state.customerPhones = parsed.customerPhones || {};
+        state.trips = Array.isArray(parsed.trips) ? parsed.trips : [];
+        state.orders = Array.isArray(parsed.orders) ? parsed.orders : [];
+        ensureTransactionCodes();
+
+        document.getElementById('bizNameInput').value = state.businessName;
+        document.getElementById('defaultFeePercentInput').value = state.settings.defaultFeePercent;
+        renderLogo();
+        saveData();
+        render();
+        alert('Database berhasil diimpor.');
+      }catch(err){
+        alert('Gagal membaca file: ' + err.message);
+      }
+      e.target.value = '';
+    };
+    reader.readAsText(file);
+  });
+
+  /* ---------- SQLITE DATABASE (real .sqlite file, via sql.js) ---------- */
+  let sqlJsModule = null;
+  async function getSqlJs(){
+    if(sqlJsModule) return sqlJsModule;
+    if(typeof initSqlJs === 'undefined'){
+      throw new Error('Modul SQLite belum termuat (cek koneksi internet lalu coba lagi).');
+    }
+    sqlJsModule = await initSqlJs({ locateFile: f => 'https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.10.3/' + f });
+    return sqlJsModule;
+  }
+
+  async function buildSqliteBytes(){
+    const SQL = await getSqlJs();
+    const db = new SQL.Database();
+    db.run(`
+      CREATE TABLE trips (
+        id TEXT PRIMARY KEY, name TEXT, currency TEXT, rate REAL, market_rate REAL, extra_costs REAL, date TEXT
+      );
+      CREATE TABLE orders (
+        id TEXT PRIMARY KEY, code TEXT, trip_id TEXT, customer TEXT, item TEXT, currency TEXT, rate REAL,
+        cost_foreign REAL, cost_idr REAL, fee REAL, fee_mode TEXT, fee_percent REAL,
+        import_tax_enabled INTEGER, import_tax_rate REAL, import_tax_idr REAL,
+        date TEXT, status TEXT, courier TEXT, tracking_number TEXT, paid INTEGER
+      );
+      CREATE TABLE customer_phones (
+        customer TEXT PRIMARY KEY, phone TEXT
+      );
+      CREATE TABLE settings (
+        key TEXT PRIMARY KEY, value TEXT
+      );
+    `);
+
+    const insertTrip = db.prepare('INSERT INTO trips VALUES (?,?,?,?,?,?,?)');
+    state.trips.forEach(t => {
+      insertTrip.run([t.id, t.name, t.currency, t.rate, t.marketRate||0, t.extraCosts||0, t.date]);
+    });
+    insertTrip.free();
+
+    const insertOrder = db.prepare('INSERT INTO orders VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)');
+    state.orders.forEach(o => {
+      insertOrder.run([
+        o.id, o.code || null, o.tripId || null, o.customer, o.item, o.currency, o.rate,
+        o.costForeign, o.costIDR, o.fee, o.feeMode, o.feePercent,
+        o.importTaxEnabled ? 1 : 0, o.importTaxRate || 0, o.importTaxIDR || 0,
+        o.date, o.status, o.courier || null, o.trackingNumber || null, o.paid ? 1 : 0
+      ]);
+    });
+    insertOrder.free();
+
+    const insertPhone = db.prepare('INSERT INTO customer_phones VALUES (?,?)');
+    Object.keys(state.customerPhones).forEach(name => {
+      insertPhone.run([name, state.customerPhones[name]]);
+    });
+    insertPhone.free();
+
+    const insertSetting = db.prepare('INSERT INTO settings VALUES (?,?)');
+    insertSetting.run(['business_name', state.businessName]);
+    insertSetting.run(['default_fee_percent', String(state.settings.defaultFeePercent)]);
+    if(state.businessLogo) insertSetting.run(['business_logo', state.businessLogo]);
+    insertSetting.free();
+
+    const bytes = db.export();
+    db.close();
+    return bytes;
+  }
+
+  async function exportSqlite(){
+    let bytes;
+    try{ bytes = await buildSqliteBytes(); }
+    catch(err){ alert(err.message); return; }
+
+    const blob = new Blob([bytes], { type: 'application/x-sqlite3' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `database-${slugify(state.businessName)}-${todayISO()}.sqlite`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }
+
+  /* ---------- SQLITE AUTO-SYNC (File System Access API) ---------- */
+  let sqliteFileHandle = null;
+  let sqliteSyncEnabled = false;
+
+  function updateSyncStatus(){
+    const el = document.getElementById('sqliteSyncStatus');
+    if(!el) return;
+    el.textContent = (sqliteSyncEnabled && sqliteFileHandle) ? `🟢 Auto-sync → ${sqliteFileHandle.name}` : '';
+  }
+
+  async function connectSqliteAutoSync(location){
+    if(!('showSaveFilePicker' in window)){
+      alert('Auto-sync langsung ke file .sqlite cuma didukung Chrome/Edge versi desktop terbaru, dan file HTML ini harus dibuka langsung dari folder (bukan lewat pratinjau di dalam chat).\n\nCara pakai: unduh file ini, buka file .html-nya langsung di Chrome/Edge, baru tombol ini akan berfungsi.\n\nSementara itu kamu tetap bisa unduh manual pakai tombol "🗄️ .sqlite" kapan saja.');
+      return;
+    }
+    try{
+      const handle = await window.showSaveFilePicker({
+        suggestedName: `database-${slugify(state.businessName)}-${todayISO()}.sqlite`,
+        types: [{ description: 'SQLite Database', accept: { 'application/x-sqlite3': ['.sqlite', '.db'] } }]
+      });
+      sqliteFileHandle = handle;
+      sqliteSyncEnabled = true;
+      updateSyncStatus();
+      await idbSaveHandle(handle);
+      document.getElementById('reconnectBanner').style.display = 'none';
+      await syncToSqliteFile();
+      const locationNote = location === 'drive'
+        ? ' Karena tersimpan di folder Google Drive, file ini akan otomatis ikut ter-upload ke akun Drive kamu oleh Google Drive for Desktop setiap kali ada perubahan.'
+        : '';
+      alert(`Tersambung ke "${handle.name}". Mulai sekarang, tiap kali kamu simpan pesanan / trip / perubahan lain, file ini otomatis ter-update — dan akan otomatis kebaca lagi tiap kali kamu buka file HTML ini.${locationNote}`);
+    }catch(err){
+      if(err.name !== 'AbortError'){
+        alert('Gagal menghubungkan file: ' + err.message);
+      }
+    }
+  }
+
+  async function syncToSqliteFile(){
+    if(!sqliteSyncEnabled || !sqliteFileHandle) return;
+    try{
+      const bytes = await buildSqliteBytes();
+      const writable = await sqliteFileHandle.createWritable();
+      await writable.write(bytes);
+      await writable.close();
+    }catch(err){
+      sqliteSyncEnabled = false;
+      updateSyncStatus();
+      alert('Auto-sync ke file .sqlite berhenti (izin dicabut atau file tidak bisa diakses). Sambungkan ulang lewat tombol "🔗 Auto-Sync .sqlite".\n\n' + err.message);
+    }
+  }
+
+  function openSyncChoicePopup(){
+    if(!('showSaveFilePicker' in window)){
+      connectSqliteAutoSync();
+      return;
+    }
+    document.getElementById('syncChoicePopup').classList.add('open');
+  }
+  function closeSyncChoicePopup(){
+    document.getElementById('syncChoicePopup').classList.remove('open');
+  }
+
+  document.getElementById('connectSyncBtn').addEventListener('click', openSyncChoicePopup);
+  document.getElementById('syncChoiceCancel').addEventListener('click', closeSyncChoicePopup);
+  document.getElementById('syncChoicePopup').addEventListener('click', (e) => {
+    if(e.target.id === 'syncChoicePopup') closeSyncChoicePopup();
+  });
+  document.getElementById('syncChoiceLocal').addEventListener('click', () => {
+    closeSyncChoicePopup();
+    connectSqliteAutoSync('local');
+  });
+  document.getElementById('syncChoiceDrive').addEventListener('click', () => {
+    closeSyncChoicePopup();
+    alert('Di jendela pilih lokasi file berikutnya, masuk ke folder Google Drive kamu yang sudah tersinkron di komputer ini (biasanya muncul sebagai "Google Drive" atau "My Drive" di File Explorer / Finder), lalu simpan file .sqlite di situ.\n\nGoogle Drive for Desktop akan otomatis meng-upload setiap perubahan ke akun Drive kamu di latar belakang.\n\nBelum pasang Google Drive for Desktop? Unduh dulu di drive.google.com/drive/download, lalu coba lagi.');
+    connectSqliteAutoSync('drive');
+  });
+
+  async function parseSqliteBytes(bytes){
+    const SQL = await getSqlJs();
+    const db = new SQL.Database(new Uint8Array(bytes));
+    const readAll = (query) => {
+      const res = db.exec(query);
+      if(!res[0]) return [];
+      const { columns, values } = res[0];
+      return values.map(row => {
+        const obj = {};
+        columns.forEach((c,i) => obj[c] = row[i]);
+        return obj;
+      });
+    };
+    const parsed = {
+      trips: readAll('SELECT * FROM trips'),
+      orders: readAll('SELECT * FROM orders'),
+      phones: readAll('SELECT * FROM customer_phones'),
+      settingsRows: readAll('SELECT * FROM settings')
+    };
+    db.close();
+    return parsed;
+  }
+
+  function applyParsedSqlite(parsed){
+    state.trips = parsed.trips.map(t => ({
+      id: t.id, name: t.name, currency: t.currency, rate: t.rate,
+      marketRate: t.market_rate, extraCosts: t.extra_costs, date: t.date
+    }));
+    state.orders = parsed.orders.map(o => ({
+      id: o.id, code: o.code || null, tripId: o.trip_id || null, customer: o.customer, item: o.item,
+      currency: o.currency, rate: o.rate, costForeign: o.cost_foreign, costIDR: o.cost_idr,
+      fee: o.fee, feeMode: o.fee_mode, feePercent: o.fee_percent,
+      importTaxEnabled: !!o.import_tax_enabled, importTaxRate: o.import_tax_rate || 0, importTaxIDR: o.import_tax_idr || 0,
+      date: o.date, status: o.status,
+      courier: o.courier || '', trackingNumber: o.tracking_number || '', paid: !!o.paid
+    }));
+    if(ensureTransactionCodes()){ /* fills in any missing codes from older sqlite files */ }
+    state.customerPhones = {};
+    parsed.phones.forEach(p => { state.customerPhones[p.customer] = p.phone; });
+    const settingsMap = {};
+    parsed.settingsRows.forEach(s => { settingsMap[s.key] = s.value; });
+    state.businessName = settingsMap.business_name || state.businessName;
+    state.businessLogo = settingsMap.business_logo || null;
+    state.settings = {
+      defaultFeePercent: Number(settingsMap.default_fee_percent || state.settings.defaultFeePercent || 10),
+      printPaperSize: state.settings.printPaperSize || 'a4'
+    };
+  }
+
+  async function importSqlite(file){
+    try{ await getSqlJs(); }catch(err){ alert(err.message); return; }
+
+    let buf, parsed;
+    try{
+      buf = await file.arrayBuffer();
+      parsed = await parseSqliteBytes(buf);
+    }catch(err){
+      alert('File .sqlite tidak valid / struktur tabel tidak sesuai: ' + err.message);
+      return;
+    }
+
+    const ok = confirm(`Impor akan MENGGANTI semua data yang ada sekarang dengan isi file ini (${parsed.orders.length} pesanan, ${parsed.trips.length} trip). Lanjutkan?`);
+    if(!ok) return;
+
+    applyParsedSqlite(parsed);
+    document.getElementById('bizNameInput').value = state.businessName;
+    document.getElementById('defaultFeePercentInput').value = state.settings.defaultFeePercent;
+    renderLogo();
+    saveData();
+    render();
+    alert('Database .sqlite berhasil diimpor.');
+  }
+
+  document.getElementById('exportSqliteBtn').addEventListener('click', exportSqlite);
+  document.getElementById('importSqliteInput').addEventListener('change', (e) => {
+    const file = e.target.files[0];
+    if(file) importSqlite(file);
+    e.target.value = '';
+  });
+
+  /* ---------- Persist the connected .sqlite file handle (IndexedDB) ---------- */
+  const IDB_NAME = 'jastip-fs-store';
+  const IDB_STORE = 'handles';
+  const IDB_KEY = 'sqliteHandle';
+
+  function idbOpen(){
+    return new Promise((resolve, reject) => {
+      if(!('indexedDB' in window)){ reject(new Error('IndexedDB tidak tersedia')); return; }
+      const req = indexedDB.open(IDB_NAME, 1);
+      req.onupgradeneeded = () => { req.result.createObjectStore(IDB_STORE); };
+      req.onsuccess = () => resolve(req.result);
+      req.onerror = () => reject(req.error);
+    });
+  }
+
+  async function idbSaveHandle(handle){
+    try{
+      const db = await idbOpen();
+      await new Promise((resolve, reject) => {
+        const tx = db.transaction(IDB_STORE, 'readwrite');
+        tx.objectStore(IDB_STORE).put(handle, IDB_KEY);
+        tx.oncomplete = resolve;
+        tx.onerror = () => reject(tx.error);
+      });
+    }catch(e){ /* silently ignore if unsupported */ }
+  }
+
+  async function idbLoadHandle(){
+    try{
+      const db = await idbOpen();
+      return await new Promise((resolve, reject) => {
+        const tx = db.transaction(IDB_STORE, 'readonly');
+        const req = tx.objectStore(IDB_STORE).get(IDB_KEY);
+        req.onsuccess = () => resolve(req.result || null);
+        req.onerror = () => reject(req.error);
+      });
+    }catch(e){ return null; }
+  }
+
+  async function idbClearHandle(){
+    try{
+      const db = await idbOpen();
+      await new Promise((resolve, reject) => {
+        const tx = db.transaction(IDB_STORE, 'readwrite');
+        tx.objectStore(IDB_STORE).delete(IDB_KEY);
+        tx.oncomplete = resolve;
+        tx.onerror = () => reject(tx.error);
+      });
+    }catch(e){ /* ignore */ }
+  }
+
+  async function loadFromSqliteHandle(handle, opts){
+    opts = opts || {};
+    try{
+      const file = await handle.getFile();
+      const buf = await file.arrayBuffer();
+      const parsed = await parseSqliteBytes(buf);
+      applyParsedSqlite(parsed);
+      document.getElementById('bizNameInput').value = state.businessName;
+      document.getElementById('defaultFeePercentInput').value = state.settings.defaultFeePercent;
+      renderLogo();
+      await saveData();
+      render();
+      return true;
+    }catch(err){
+      if(!opts.silent) alert('Gagal memuat data dari file .sqlite: ' + err.message);
+      return false;
+    }
+  }
+
+  let pendingSqliteHandle = null;
+
+  async function tryRestoreSqliteHandle(){
+    const handle = await idbLoadHandle();
+    if(!handle) return;
+
+    let perm;
+    try{ perm = await handle.queryPermission({ mode: 'readwrite' }); }
+    catch(err){ return; }
+
+    if(perm === 'granted'){
+      sqliteFileHandle = handle;
+      sqliteSyncEnabled = true;
+      updateSyncStatus();
+      await loadFromSqliteHandle(handle, { silent: true });
+    } else if(perm === 'prompt'){
+      pendingSqliteHandle = handle;
+      document.getElementById('reconnectBanner').style.display = 'flex';
+    }
+  }
+
+  document.getElementById('reconnectBtn').addEventListener('click', async () => {
+    if(!pendingSqliteHandle) return;
+    try{
+      const perm = await pendingSqliteHandle.requestPermission({ mode: 'readwrite' });
+      if(perm === 'granted'){
+        sqliteFileHandle = pendingSqliteHandle;
+        sqliteSyncEnabled = true;
+        updateSyncStatus();
+        document.getElementById('reconnectBanner').style.display = 'none';
+        await loadFromSqliteHandle(sqliteFileHandle, { silent: true });
+      } else {
+        alert('Izin ditolak — auto-sync tidak bisa dilanjutkan. Sambungkan file baru lewat tombol "🔗 Auto-Sync .sqlite".');
+        document.getElementById('reconnectBanner').style.display = 'none';
+      }
+    }catch(err){
+      alert('Gagal menyambungkan ulang: ' + err.message);
+    }
+  });
+
+  document.getElementById('todayLabel').textContent = todayLong();
+  loadData().then(() => { tryRestoreSqliteHandle(); });
+</script>
+</body>
+</html>

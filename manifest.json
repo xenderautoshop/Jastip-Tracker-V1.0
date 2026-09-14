@@ -1,0 +1,16 @@
+{
+  "name": "Buku Kas Jastip",
+  "short_name": "Kas Jastip",
+  "description": "Aplikasi pencatatan pesanan, trip, kurs, dan laporan bisnis jastip.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#efe9d6",
+  "theme_color": "#262b21",
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icon-512-maskable.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
